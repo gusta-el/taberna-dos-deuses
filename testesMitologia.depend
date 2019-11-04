@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1572810196 source:c:\users\gustavocabrera\desktop\testesmitologia\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+
