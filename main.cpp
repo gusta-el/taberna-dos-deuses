@@ -14,10 +14,14 @@
 #define TELA_FADE_OUT 2
 #define TELA_FADE_IN 3
 
-#define TIME_NORMAL 0
-#define TIME_ATTACK 1
-#define TIME_ATTACKING 2
-#define TIME_BACK_ATTACK 3
+#define IMAGEM_MENU_SEM_SELECAO 0
+#define IMAGEM_JOGAR_SELECIONADO 1
+#define IMAGEM_OPCOES_SELECIONADO 2
+#define IMAGEM_CREDITOS_SELECIONADO 3
+
+#define GOD_CARD 0
+#define PRAYER_CARD 1
+#define MAGIC_CARD 2
 
 #define JAPONESE 0
 #define MAYA 1
@@ -56,6 +60,11 @@
 #define IXTAB 2
 #define IXCHEL 3
 #define XAMN_EK 4
+
+#define TIME_NORMAL 0
+#define TIME_ATTACK 1
+#define TIME_ATTACKING 2
+#define TIME_BACK_ATTACK 3
 
 //=========================SETUP DEUS=========================//
 struct Deus {
@@ -110,7 +119,8 @@ struct Card{
     int spaceY;
     int limitSpace;
     int passo;
-    Deus carta;
+    Deus deus;
+    int type;
 };
 
 void new_Card(Card *card, int x, int y, int spaceX, int spaceY, int limitSpace, int passo){
@@ -172,6 +182,20 @@ void new_SpaceFields(int xSize, int ySize, Card card, SpaceField sizeFields[20])
     for (size_t j = 0; j < 5; j++){
         new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index]);
         posXDark = posXDark + card.X*1.2;
+        index++;
+    }
+
+}
+
+void new_SpaceHandFields(int xSize, int ySize, Card card, SpaceField sizeHandFields[5]){
+
+  int xHandPos = xSize*0.53;
+  int yHandPos = ySize*0.73;
+  int index = 0;
+
+    for (size_t j = 0; j < 5; j++){
+        new_SpaceField(xHandPos, yHandPos, xHandPos + card.X, yHandPos + card.Y, &sizeHandFields[index]);
+        xHandPos = xHandPos + card.X*1.2;
         index++;
     }
 
@@ -277,10 +301,17 @@ void putCardField(int posX, int posY, void *image, void *imageMask){
    putimage(posX, posY, imageMask, OR_PUT);
 }
 
-
 //=========================SETUP DECK=========================//
-void buildDeck(Card card[]){
-
+void buildDeck(Card deck[20], Deus deuses[5]){
+      for(int i = 0; i < 20; i ++){
+        int num = rand();
+            if(num >= 0 && num < 5){
+                deck[i].deus = deuses[num];
+                deck[i].type = GOD_CARD;
+            } else {
+                i--;
+            }
+  }
 }
 
 //=========================SETUP CAMPO DE BATALHA=========================//
@@ -303,57 +334,86 @@ int verifyCardClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, boo
     return BLANK_CLICK;
 }
 
+int verifyMenuClick(int x, int y, void *menuImages[4], int tela){
 
+        if(mousex() > x*0.07 && mousex() < x*0.22 && mousey() > 0.37*y && mousey() < 0.46*y){
+            putimage(0, 0, menuImages[IMAGEM_JOGAR_SELECIONADO], 0);
+            if(ismouseclick(WM_LBUTTONDOWN)){
+                 tela =  TELA_FADE_OUT;
+            }
+        }
 
+        if(mousex() > x*0.07 && mousex() < x*0.24 && mousey() > 0.50*y && mousey() < 0.59*y){
+            putimage(0, 0, menuImages[IMAGEM_OPCOES_SELECIONADO], 0);
+            if(ismouseclick(WM_LBUTTONDOWN)){
+                tela =  TELA_FADE_OUT;
+            }
+        }
+
+        if(mousex() > x*0.07 && mousex() < x*0.27 && mousey() > 0.63*y && mousey() < 0.72*y){
+            putimage(0, 0, menuImages[IMAGEM_CREDITOS_SELECIONADO], 0);
+            if(ismouseclick(WM_LBUTTONDOWN)){
+                tela =  TELA_FADE_OUT;
+            }
+        }
+
+    return tela;
+
+}
 
 int main()  {
-
-
-
 
   int ySize = 700; //GetSystemMetrics(SM_CYSCREEN);  760
   int xSize = ySize*1.8; //GetSystemMetrics(SM_CXSCREEN); 1360
   initwindow(xSize, ySize);
 
-  readFile();
-  int pg = 2;
   char tecla = 0;
-  int tela = TELA_MENU_PRINCIPAL;
-  int tela1 = TELA_MENU_PRINCIPAL;
-  int fadeIn = 255;
+  int pg = 2;
   int fadeOut = 0;
-
-
-  int x, y, posXDark, posYDark;
+  int fadeIn = 255;
+  int tela = TELA_MENU_PRINCIPAL;
   int cardOn = CARD_OFF;
   int cardField = CARD_OFF;
+  int x, y, posXDark, posYDark;
+  int xDeckPos = xSize*0.53; 
+  int yDeckPos = ySize*0.26;
+  int yHandPos = ySize*0.73;
   bool backFullCard = false;
+  
   srand(time(0));
 
   Card card;
   new_Card(&card, xSize*0.085, ySize*0.21, xSize*0.05, ySize*0.03, 0, 0);
   Card cardFull;
   new_Card(&cardFull, card.X*3, card.Y*3, xSize, (ySize/2) - (card.Y*1.5), card.X*6.9, 20);
-  SpaceField deck;
-  new_SpaceField(xSize*0.67, card.spaceY, xSize*0.67 + card.X, card.spaceY + card.Y, &deck);
-
+  SpaceField spaceField;
+  new_SpaceField(xSize*0.67, card.spaceY, xSize*0.67 + card.X, card.spaceY + card.Y, &spaceField);
   SpaceField sizeFields[20];
   new_SpaceFields(xSize, ySize, card, sizeFields);
+
+
 
   int cardSize = imagesize(0, 0, card.X, card.Y);
   int cardFullSize = imagesize(0, 0, cardFull.X, cardFull.Y);
   int deusSize = imagesize(0, 0, card.X*0.8, card.Y*0.6);
   int fieldSize = imagesize(0, 0, xSize, ySize);
 
-  int itemMenuSizeX = 120;
-  int itemMenuSizeY = 60;
-  int stangle = 90;
-  int endangle = 270;
 
   void *menuImage = addImage(xSize, ySize);
+  void *jogarOpImage = addImage(xSize, ySize);
+  void *optionsOpImage = addImage(xSize, ySize);
+  void *creditsOpImage = addImage(xSize, ySize);
+  setupImage(xSize, ySize, menuImage, menuImage, "images/menu.bmp", "images/menu.bmp");
+  setupImage(xSize, ySize, jogarOpImage, jogarOpImage, "images/jogarSelected.bmp", "images/jogarSelected.bmp");
+  setupImage(xSize, ySize, optionsOpImage, optionsOpImage, "images/opcoesSelected.bmp", "images/opcoesSelected.bmp");
+  setupImage(xSize, ySize, creditsOpImage, creditsOpImage, "images/creditosSelected.bmp", "images/creditosSelected.bmp");
+  void *menuImages[4];
+  menuImages[IMAGEM_MENU_SEM_SELECAO] = menuImage;
+  menuImages[IMAGEM_JOGAR_SELECIONADO] = jogarOpImage;
+  menuImages[IMAGEM_OPCOES_SELECIONADO] = optionsOpImage;
+  menuImages[IMAGEM_CREDITOS_SELECIONADO] = creditsOpImage;
+
   void *field = addImage(xSize, ySize);
-  void *itemMenu = addImage(itemMenuSizeX, itemMenuSizeY);
-  void *itemMenuSelected = addImage(itemMenuSizeX, itemMenuSizeY);
   void *cardFaceUp = addImage(card.X, card.Y);
   void *cardFaceUpMask = addImage(card.X, card.Y);
   void *cardFaceUpEnemy = addImage(card.X, card.Y);
@@ -366,7 +426,6 @@ int main()  {
   void *cardfaceDownMask = addImage(card.X, card.Y);
   void *cardfaceDownEnemy = addImage(card.X, card.Y);
   void *cardfaceDownMaskEnemy = addImage(card.X, card.Y);
-  
   Deus deuses[5];
   new_Deuses(deuses);
   deuses[KUKULCAN].image = cardFaceUpFull;
@@ -379,33 +438,33 @@ int main()  {
   deuses[IXCHEL].imageMask = cardFaceUpMaskFull;
   deuses[XAMN_EK].image = cardFaceUpFull;
   deuses[XAMN_EK].imageMask = cardFaceUpMaskFull;
-
-  setupImage(card.X, card.Y, cardFaceUp, cardFaceUpMask, "deusCard.bmp", "cardFaceUpMask.bmp");
-  setupImage(card.X, card.Y, cardFaceUpEnemy, cardFaceUpMaskEnemy, "cardFaceUpEnemy.bmp", "cardFaceUpMaskEnemy.bmp");
-  setupImage(cardFull.X, cardFull.Y, deuses[0].image, deuses[0].imageMask, "cardFaceUp.bmp", "cardFaceUpMask.bmp");
-  setupImage(card.X*0.8, card.Y*0.6, deusImagem, deusImagemMask, "kuriboh.bmp", "kuribohMask.bmp");
-  setupImage(card.X, card.Y, cardfaceDown, cardfaceDownMask, "cardFaceDown.bmp", "cardFaceDownMask.bmp");
-  setupImage(card.X, card.Y, cardfaceDownEnemy, cardfaceDownMaskEnemy, "cardFaceDownEnemy.bmp", "cardFaceDownMaskEnemy.bmp");
-  setupImage(xSize, ySize, menuImage, menuImage, "menu.bmp", "menu.bmp");
-  setupImage(itemMenuSizeX, itemMenuSizeY, itemMenu, itemMenu, "jogar.bmp", "jogar.bmp");
-  setupImage(itemMenuSizeX, itemMenuSizeY, itemMenuSelected, itemMenuSelected, "jogar2.bmp", "jogar2.bmp");
-  setupImage(xSize, ySize, field, field, "campo.bmp", "campo.bmp");
+  setupImage(card.X, card.Y, cardFaceUp, cardFaceUpMask, "images/deusCard.bmp", "images/cardFaceUpMask.bmp");
+  setupImage(card.X, card.Y, cardFaceUpEnemy, cardFaceUpMaskEnemy, "images/cardFaceUpEnemy.bmp", "images/cardFaceUpMaskEnemy.bmp");
+  setupImage(cardFull.X, cardFull.Y, deuses[0].image, deuses[0].imageMask, "images/cardFaceUp.bmp", "images/cardFaceUpMask.bmp");
+  setupImage(card.X*0.8, card.Y*0.6, deusImagem, deusImagemMask, "images/kuriboh.bmp", "images/kuribohMask.bmp");
+  setupImage(card.X, card.Y, cardfaceDown, cardfaceDownMask, "images/cardFaceDown.bmp", "images/cardFaceDownMask.bmp");
+  setupImage(card.X, card.Y, cardfaceDownEnemy, cardfaceDownMaskEnemy, "images/cardFaceDownEnemy.bmp", "images/cardFaceDownMaskEnemy.bmp");
+  setupImage(xSize, ySize, field, field, "images/campo.bmp", "images/campo.bmp");
 
   int x1FadeSize = 0;
   int y1FadeSize = ySize/2;
   int x2FadeSize = xSize;
   int y2FadeSize = ySize/2;
+  int stangle = 90;
+  int endangle = 270;
 
-    setbkcolor(COLOR(60,179,113));
+  int changeFade = 0;
+  int change = 0;
+  int tempo = 0;
+  int velocidade = 0;
+  double aceleration = 0.03;
 
-    int changeFade = 0;
-    int change = 0;
-    int tempo = 0;
-    int velocidade = 0;
-    double aceleration = 0.03;
-
-    int Xasd = 0;
-    int Yasd = 0;
+  Card deck[20];
+  buildDeck(deck, deuses);
+  
+  SpaceField sizeHandFields[5];
+  new_SpaceHandFields(xSize, ySize, card, sizeHandFields);
+  printf("valor te: %d", sizeHandFields[0]);
 
   while(tecla != 27) {
     if (pg == 1) pg = 2; else pg=1;
@@ -413,49 +472,47 @@ int main()  {
     cleardevice();
 
     if(tela == TELA_MENU_PRINCIPAL || tela == TELA_FADE_OUT){
-        putimage(0, 0, menuImage, 0);
-        putimage(150, 280, itemMenu, 0);
-
-        if(mousex() > 150 && mousex() < (150 + itemMenuSizeX) && mousey() > 280 && mousey() < (280 + itemMenuSizeY)){
-            putimage(150, 280, itemMenuSelected, 0);
-            if(ismouseclick(WM_LBUTTONDOWN)){
-                tela = TELA_FADE_OUT;
-            }
-        }
+        putimage(0, 0, menuImages[IMAGEM_MENU_SEM_SELECAO], 0);
+        tela = verifyMenuClick(xSize, ySize, menuImages, tela);
         clearmouseclick(WM_LBUTTONDOWN);
     }
 
     if(tela == TELA_DUELO || tela == TELA_FADE_IN){
 
         putimage(0, 0, field, 0);
+        putCardField(xSize*0.53, ySize*0.5, cardfaceDown, cardfaceDownMask);
+        putCardField(sizeHandFields[0].left, sizeHandFields[0].top, cardfaceDown, cardfaceDownMask);
+        putCardField(sizeHandFields[1].left, sizeHandFields[0].top, cardfaceDown, cardfaceDownMask);
+        //if(tela == TELA_DUELO && yDeckPos )
+        //putCardField(sizeFields, yDeckPos, cardfaceDown, cardfaceDownMask);
 
-    int posClickX = 0;
-    int posClickY = 0;
-    bool clickOn = ismouseclick(WM_LBUTTONDOWN);
-    if(clickOn){
-        getmouseclick(WM_LBUTTONDOWN, posClickX, posClickY);
-        cardField = verifyCardClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
-    }
 
-    if(cardOn == CARD_ON && cardField != BLANK_CLICK){
-        setcolor(WHITE);
-        rectangle(sizeFields[cardField].left, sizeFields[cardField].top, sizeFields[cardField].right, sizeFields[cardField].bottom);
-            if(cardFull.spaceX > cardFull.limitSpace){
-                cardFull.spaceX = cardFull.spaceX - cardFull.passo;
-            }
-    } else {
-        if(backFullCard) {
-            if(cardFull.spaceX < xSize){
-                cardFull.spaceX = cardFull.spaceX + cardFull.passo;
-            } else {
-                backFullCard = false;
+        int posClickX = 0;
+        int posClickY = 0;
+        bool clickOn = ismouseclick(WM_LBUTTONDOWN);
+        if(clickOn){
+            getmouseclick(WM_LBUTTONDOWN, posClickX, posClickY);
+            cardField = verifyCardClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
+        }
+
+        if(cardOn == CARD_ON && cardField != BLANK_CLICK){
+            setcolor(WHITE);
+            rectangle(sizeFields[cardField].left, sizeFields[cardField].top, sizeFields[cardField].right, sizeFields[cardField].bottom);
+                if(cardFull.spaceX > cardFull.limitSpace){
+                    cardFull.spaceX = cardFull.spaceX - cardFull.passo;
+                }
+        } else {
+            if(backFullCard) {
+                if(cardFull.spaceX < xSize){
+                    cardFull.spaceX = cardFull.spaceX + cardFull.passo;
+                } else {
+                    backFullCard = false;
+                }
             }
         }
-    }
 
-    putCardField(cardFull.spaceX, cardFull.spaceY, cardFaceUpFull, cardFaceUpMaskFull);
-    //putCardField(xSize*0.835, 175, cardfaceDownEnemy, cardfaceDownMaskEnemy);
-
+        putCardField(cardFull.spaceX, cardFull.spaceY, cardFaceUpFull, cardFaceUpMaskFull);
+        
 }
 
 if (tela == TELA_FADE_OUT){
