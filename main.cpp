@@ -14,6 +14,8 @@
 #define TELA_FADE_OUT 2
 #define TELA_FADE_IN 3
 
+#define MAX_HAND 4
+
 #define IMAGEM_MENU_SEM_SELECAO 0
 #define IMAGEM_JOGAR_SELECIONADO 1
 #define IMAGEM_OPCOES_SELECIONADO 2
@@ -143,12 +145,12 @@ struct SpaceField{
     bool active;
 };
 
-void new_SpaceField(int left, int top, int right, int bottom, SpaceField *spaceField){
+void new_SpaceField(int left, int top, int right, int bottom, SpaceField *spaceField, bool active){
         spaceField->left = left;
         spaceField->top = top;
         spaceField->right = right;
         spaceField->bottom = bottom;
-        spaceField->active = true;
+        spaceField->active = active;
 }
 
 void new_SpaceFields(int xSize, int ySize, Card card, SpaceField sizeFields[20]){
@@ -158,7 +160,7 @@ void new_SpaceFields(int xSize, int ySize, Card card, SpaceField sizeFields[20])
     int index = 0;
 
     for (size_t j = 0; j < 5; j++){
-        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index]);
+        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false);
         posXDark = posXDark + card.X*1.2;
         index++;
     }
@@ -166,35 +168,34 @@ void new_SpaceFields(int xSize, int ySize, Card card, SpaceField sizeFields[20])
     posXDark = xSize*0.025;
     posYDark = ySize/2 + card.Y + card.spaceY;
     for (size_t j = 0; j < 5; j++){
-        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index]);
+        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false);
         posXDark = posXDark + card.X*1.2;
         index++;
     }
     posXDark = xSize*0.025;
     posYDark = ySize/2 - card.Y - card.spaceY;
     for (size_t j = 0; j < 5; j++){
-        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index]);
+        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false);
         posXDark = posXDark + card.X*1.2;
         index++;
     }
     posXDark = xSize*0.025;
     posYDark = posYDark - card.Y - card.spaceY;
     for (size_t j = 0; j < 5; j++){
-        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index]);
+        new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false);
         posXDark = posXDark + card.X*1.2;
         index++;
     }
 
 }
 
-void new_SpaceHandFields(int xSize, int ySize, Card card, SpaceField sizeHandFields[5]){
+void new_SpaceHandFields(int xSize, int yHandPos, Card card, SpaceField sizeHandFields[5]){
 
   int xHandPos = xSize*0.53;
-  int yHandPos = ySize*0.73;
   int index = 0;
 
     for (size_t j = 0; j < 5; j++){
-        new_SpaceField(xHandPos, yHandPos, xHandPos + card.X, yHandPos + card.Y, &sizeHandFields[index]);
+        new_SpaceField(xHandPos, yHandPos, xHandPos + card.X, yHandPos + card.Y, &sizeHandFields[index], true);
         xHandPos = xHandPos + card.X*1.2;
         index++;
     }
@@ -315,7 +316,7 @@ void buildDeck(Card deck[20], Deus deuses[5]){
 }
 
 //=========================SETUP CAMPO DE BATALHA=========================//
-int verifyCardClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField sizeFields[20]){
+int verifyCardFieldClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField sizeFields[20]){
 
     if(cardOn == CARD_OFF){
         for (size_t i = 0; i < 20; i++){
@@ -332,6 +333,65 @@ int verifyCardClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, boo
     }
 
     return BLANK_CLICK;
+}
+
+int verifyCardHandClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField sizeHandFields[5]){
+
+    if(cardOn == CARD_OFF){
+        for (size_t i = 0; i < 4; i++){
+            if(x >= sizeHandFields[i].left && y >= sizeHandFields[i].top  && x <= sizeHandFields[i].right && y <= sizeHandFields[i].bottom){
+                if(sizeHandFields[i].active){
+                    *cardOnPointer = CARD_ON;
+                    return i;
+                }
+            }
+        }
+    } else {
+        *cardOnPointer = CARD_OFF;
+        *backFullCard = true;
+    }
+
+    return BLANK_CLICK;
+}
+
+void selectCardField(int xSize, int cardOn, int cardField, SpaceField sizeFields[20], Card cardFull, Card *cardFullPointer, bool backFullCard, bool *backFullCardPointer){
+
+    if(cardOn == CARD_ON && cardField != BLANK_CLICK){
+        setcolor(WHITE);
+        rectangle(sizeFields[cardField].left, sizeFields[cardField].top, sizeFields[cardField].right, sizeFields[cardField].bottom);
+            if(cardFull.spaceX > cardFull.limitSpace){
+                cardFullPointer->spaceX = cardFull.spaceX - cardFull.passo;
+            }
+    } else {
+        if(backFullCard) {
+            if(cardFull.spaceX < xSize){
+                cardFullPointer->spaceX = cardFull.spaceX + cardFull.passo;
+            } else {
+                *backFullCardPointer = false;
+            }
+        }
+    }
+
+}
+
+void selectCardHand(int xSize, int cardOn, int cardField, SpaceField sizeHandFields[5], Card cardFull, Card *cardFullPointer, bool backFullCard, bool *backFullCardPointer){
+
+    if(cardOn == CARD_ON && cardField != BLANK_CLICK){
+        setcolor(WHITE);
+        rectangle(sizeHandFields[cardField].left, sizeHandFields[cardField].top, sizeHandFields[cardField].right, sizeHandFields[cardField].bottom);
+            if(cardFull.spaceX > cardFull.limitSpace){
+                cardFullPointer->spaceX = cardFull.spaceX - cardFull.passo;
+            }
+    } else {
+        if(backFullCard) {
+            if(cardFull.spaceX < xSize){
+                cardFullPointer->spaceX = cardFull.spaceX + cardFull.passo;
+            } else {
+                *backFullCardPointer = false;
+            }
+        }
+    }
+
 }
 
 int verifyMenuClick(int x, int y, void *menuImages[4], int tela){
@@ -373,31 +433,29 @@ int main()  {
   int fadeIn = 255;
   int tela = TELA_MENU_PRINCIPAL;
   int cardOn = CARD_OFF;
-  int cardField = CARD_OFF;
+  int cardField = BLANK_CLICK;
+  int cardHand = BLANK_CLICK;
   int x, y, posXDark, posYDark;
-  int xDeckPos = xSize*0.53; 
+  int xDeckPos = xSize*0.53;
   int yDeckPos = ySize*0.26;
   int yHandPos = ySize*0.73;
   bool backFullCard = false;
-  
+
   srand(time(0));
 
   Card card;
   new_Card(&card, xSize*0.085, ySize*0.21, xSize*0.05, ySize*0.03, 0, 0);
   Card cardFull;
-  new_Card(&cardFull, card.X*3, card.Y*3, xSize, (ySize/2) - (card.Y*1.5), card.X*6.9, 20);
+  new_Card(&cardFull, card.X*3, card.Y*3, xSize, (ySize/2) - (card.Y*1.5), card.X*7.5, 20);
   SpaceField spaceField;
-  new_SpaceField(xSize*0.67, card.spaceY, xSize*0.67 + card.X, card.spaceY + card.Y, &spaceField);
+  new_SpaceField(xSize*0.67, card.spaceY, xSize*0.67 + card.X, card.spaceY + card.Y, &spaceField, false);
   SpaceField sizeFields[20];
   new_SpaceFields(xSize, ySize, card, sizeFields);
-
-
 
   int cardSize = imagesize(0, 0, card.X, card.Y);
   int cardFullSize = imagesize(0, 0, cardFull.X, cardFull.Y);
   int deusSize = imagesize(0, 0, card.X*0.8, card.Y*0.6);
   int fieldSize = imagesize(0, 0, xSize, ySize);
-
 
   void *menuImage = addImage(xSize, ySize);
   void *jogarOpImage = addImage(xSize, ySize);
@@ -461,15 +519,38 @@ int main()  {
 
   Card deck[20];
   buildDeck(deck, deuses);
-  
+  int amountHand = 3;
+
   SpaceField sizeHandFields[5];
-  new_SpaceHandFields(xSize, ySize, card, sizeHandFields);
-  printf("valor te: %d", sizeHandFields[0]);
+  new_SpaceHandFields(xSize, ySize/2 + card.Y + card.spaceY, card, sizeHandFields);
+  SpaceField sizeHandFieldsEnemy[5];
+  new_SpaceHandFields(xSize, card.spaceY, card, sizeHandFieldsEnemy);
+
+  int g = 150;
+  int aux_r = 0;
 
   while(tecla != 27) {
     if (pg == 1) pg = 2; else pg=1;
     setactivepage(pg);
     cleardevice();
+
+    setbkcolor(COLOR(30,g,50));
+
+    if(aux_r == 0){
+        if(g < 150){
+            g++;
+        } else {
+            aux_r = 1;
+        }
+    } else {
+        if(g > 70){
+            g--;
+        } else {
+            aux_r = 0;
+        }
+    }
+    printf("valor: %d \n", g);
+    //outtextxy(10, 10, );
 
     if(tela == TELA_MENU_PRINCIPAL || tela == TELA_FADE_OUT){
         putimage(0, 0, menuImages[IMAGEM_MENU_SEM_SELECAO], 0);
@@ -479,12 +560,18 @@ int main()  {
 
     if(tela == TELA_DUELO || tela == TELA_FADE_IN){
 
-        putimage(0, 0, field, 0);
-        putCardField(xSize*0.53, ySize*0.5, cardfaceDown, cardfaceDownMask);
-        putCardField(sizeHandFields[0].left, sizeHandFields[0].top, cardfaceDown, cardfaceDownMask);
-        putCardField(sizeHandFields[1].left, sizeHandFields[0].top, cardfaceDown, cardfaceDownMask);
-        //if(tela == TELA_DUELO && yDeckPos )
-        //putCardField(sizeFields, yDeckPos, cardfaceDown, cardfaceDownMask);
+        //putimage(0, 0, field, 0);
+        //Deck
+        putCardField(xSize*0.53, ySize/2, cardfaceDown, cardfaceDownMask);
+        putCardField(xSize*0.53, (ySize/2) - card.Y - card.spaceY, cardfaceDownEnemy, cardfaceDownMaskEnemy);
+
+        //Mão
+        for (size_t i = 0; i < 4; i++)
+        {
+            putCardField(sizeHandFields[i].left, sizeHandFields[i].top, cardFaceUp, cardFaceUpMask);
+            putCardField(sizeHandFieldsEnemy[i].left, sizeHandFieldsEnemy[i].top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
+        }
+
 
 
         int posClickX = 0;
@@ -492,27 +579,19 @@ int main()  {
         bool clickOn = ismouseclick(WM_LBUTTONDOWN);
         if(clickOn){
             getmouseclick(WM_LBUTTONDOWN, posClickX, posClickY);
-            cardField = verifyCardClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
-        }
-
-        if(cardOn == CARD_ON && cardField != BLANK_CLICK){
-            setcolor(WHITE);
-            rectangle(sizeFields[cardField].left, sizeFields[cardField].top, sizeFields[cardField].right, sizeFields[cardField].bottom);
-                if(cardFull.spaceX > cardFull.limitSpace){
-                    cardFull.spaceX = cardFull.spaceX - cardFull.passo;
-                }
-        } else {
-            if(backFullCard) {
-                if(cardFull.spaceX < xSize){
-                    cardFull.spaceX = cardFull.spaceX + cardFull.passo;
-                } else {
-                    backFullCard = false;
-                }
+            if(cardField == BLANK_CLICK){
+                cardHand = verifyCardHandClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeHandFields);
+            }
+            if(cardHand == BLANK_CLICK){
+                cardField = verifyCardFieldClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
             }
         }
 
+        selectCardField(xSize, cardOn, cardField, sizeFields, cardFull, &cardFull, backFullCard, &backFullCard);
+        selectCardHand(xSize, cardOn, cardHand, sizeHandFields, cardFull, &cardFull, backFullCard, &backFullCard);
+
         putCardField(cardFull.spaceX, cardFull.spaceY, cardFaceUpFull, cardFaceUpMaskFull);
-        
+
 }
 
 if (tela == TELA_FADE_OUT){
