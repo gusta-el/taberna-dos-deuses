@@ -83,9 +83,7 @@
 //METODOS PARA OS DEUSES
     struct Deus {
         int id;
-        char * nome;
         char * nick;
-        char * descricao;
         int attackPoints;
         int lifePoints;
         int specialPower;
@@ -95,14 +93,15 @@
         int y;
         void * image;
         void * imageMask;
+        void * imageCard;
+        void * imageCardMask;
+
     };
 
-    void new_Deus(Deus *deus, int id, char * nome, char * descricao, char * nick, int attackPoints, int lifePoints, int specialPower, int mithology){
+    void new_Deus(Deus *deus, int id, char * nick, int attackPoints, int lifePoints, int specialPower, int mithology){
 
         deus->id = id;
-        deus->nome = nome;
         deus->nick = nick;
-        deus->descricao  = descricao;
         deus->attackPoints = attackPoints;
         deus->lifePoints = lifePoints;
         deus->specialPower = specialPower;
@@ -116,8 +115,6 @@
 
         struct Deus deus;
         deus.id = id;
-        deus.nome = deusData[0];
-        deus.descricao  = deusData[1];
         deus.attackPoints = (int)deusData[2];
         deus.lifePoints = (int)deusData[3];
         deus.specialPower = (int)deusData[4];
@@ -131,64 +128,49 @@
 
         Deus kukulcan;
         new_Deus(&kukulcan, KUKULCAN,
-        "Kukulcán - A Serpente Alada", "Kukulcán, com seus ventos da mudança, pode trocar uma carta no campo adversário com uma carta no seu campo."
-        , "images/deuses/kukulcan.bmp", 3, 3, 0, MAYA);
+        "images/deuses/kukulcan.bmp", 3, 3, 0, MAYA);
         Deus camazotz;
         new_Deus(&camazotz, CAMAZOTZ,
-        "Camazotz - Deus Morcego", "Caso um alvo estiver com menos de 25 de pontos de vida, ele o executa instantaneamente."
-        , "images/deuses/camazotz.bmp", 3, 3, 0, MAYA);
+        "images/deuses/camazotz.bmp", 3, 3, 0, MAYA);
         Deus ixtab;
         new_Deus(&ixtab, IXTAB,
-        "Ixtab - Deusa do Suicídio", "Ao ser invocada, faz com que uma carta dê dano a si mesmo."
-        , "images/deuses/ixtab.bmp", 3, 3, 0, MAYA);
+        "images/deuses/ixtab.bmp", 3, 3, 0, MAYA);
         Deus ixchel;
         new_Deus(&ixchel, IXCHEL,
-        "Ixchel - Deusa da Medicina", "Seleciona uma carta aliada e a cura por 50 dos pontos de vida. Ao usar esse efeito, deve-se esperar 2 rodadas para usar novamente."
-        , "images/deuses/ixchel.bmp", 3, 3, 0, MAYA);
+        "images/deuses/ixchel.bmp", 3, 3, 0, MAYA);
         Deus xamanEk;
         new_Deus(&xamanEk, XAMN_EK,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/xamanEk.bmp", 3, 3, 0, MAYA);
+        "images/deuses/xamanEk.bmp", 3, 3, 0, MAYA);
         Deus izanagi;
         new_Deus(&izanagi, IZANAGI,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/izanagi.bmp", 3, 3, 0, JAPONESE);
+        "images/deuses/izanagi.bmp", 3, 3, 0, JAPONESE);
         Deus izanami;
         new_Deus(&izanami, IZANAMI,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/izanami.bmp", 3, 3, 0, JAPONESE);
+        "images/deuses/izanami.bmp", 3, 3, 0, JAPONESE);
         Deus amaterasu;
         new_Deus(&amaterasu, AMATERASU,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/amaterasu.bmp", 3, 3, 0, JAPONESE);
+        "images/deuses/amaterasu.bmp", 3, 3, 0, JAPONESE);
         Deus tsukiYomi;
         new_Deus(&tsukiYomi, TSUKI_YOMI,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/tsukiYomi.bmp", 3, 3, 0, JAPONESE);
+        "images/deuses/tsukiYomi.bmp", 3, 3, 0, JAPONESE);
         Deus susano;
         new_Deus(&susano, SUSANO,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/susano.bmp", 3, 3, 0, JAPONESE);
+        "images/deuses/susano.bmp", 3, 3, 0, JAPONESE);
         Deus tupa;
         new_Deus(&tupa, TUPA,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/tupa.bmp", 3, 3, 0, BRAZILIAN);
+        "images/deuses/tupa.bmp", 3, 3, 0, BRAZILIAN);
         Deus jaci;
         new_Deus(&jaci, JACI,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/jaci.bmp", 3, 3, 0, BRAZILIAN);
+        "images/deuses/jaci.bmp", 3, 3, 0, BRAZILIAN);
         Deus guaraci;
         new_Deus(&guaraci, GUARACI,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/guaraci.bmp", 3, 3, 0, BRAZILIAN);
+        "images/deuses/guaraci.bmp", 3, 3, 0, BRAZILIAN);
         Deus anhanga;
         new_Deus(&anhanga, ANHANGA,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/anhanga.bmp", 3, 3, 0, BRAZILIAN);
+        "images/deuses/anhanga.bmp", 3, 3, 0, BRAZILIAN);
         Deus ruda;
         new_Deus(&ruda, RUDA,
-        "Xaman Ek - Deus dos viajantes e mercadores", "Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida."
-        , "images/deuses/ruda.bmp", 3, 3, 0, BRAZILIAN);
+        "images/deuses/ruda.bmp", 3, 3, 0, BRAZILIAN);
 
         deuses[KUKULCAN] = kukulcan;
         deuses[CAMAZOTZ] = camazotz;
@@ -232,10 +214,10 @@
 
     }
 
-    void buildDeck(Card deck[20], Deus deuses[5]){
+    void buildDeck(Card deck[20], Deus deuses[15]){
         for(int i = 0; i < 20; i ++){
             int num = rand();
-                if(num >= 0 && num < 5){
+                if(num >= 0 && num < 15){
                     deck[i].deus = deuses[num];
                     deck[i].type = GOD_CARD;
                 } else {
@@ -252,6 +234,7 @@
         int bottom;
         int right;
         bool active;
+        Card card;
     };
 
     void new_SpaceField(int left, int top, int right, int bottom, SpaceField *spaceField, bool active){
@@ -260,6 +243,11 @@
             spaceField->right = right;
             spaceField->bottom = bottom;
             spaceField->active = active;
+    }
+
+    void new_SpaceField(int left, int top, SpaceField *spaceField){
+            spaceField->left = left;
+            spaceField->top = top;
     }
 
     void new_SpaceFields(int xSize, int ySize, Card card, SpaceField sizeFields[20]){
@@ -311,6 +299,25 @@
 
     }
 
+    int verifyCardFieldClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField deckSize, bool turn){
+
+        if(cardOn == CARD_OFF && turn == true ){
+            for (size_t i = 0; i < 20; i++){
+                if(x >= sizeFields[i].left && y >= sizeFields[i].top  && x <= sizeFields[i].right && y <= sizeFields[i].bottom){
+                    if(sizeFields[i].active){
+                        *cardOnPointer = CARD_ON;
+                        return i;
+                    }
+                }
+            }
+        } else {
+            *cardOnPointer = CARD_OFF;
+            *backFullCard = true;
+        }
+
+        return BLANK_CLICK;
+    }
+
     int verifyCardFieldClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField sizeFields[20]){
 
         if(cardOn == CARD_OFF){
@@ -330,10 +337,11 @@
         return BLANK_CLICK;
     }
 
-    int verifyCardHandClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField sizeHandFields[5]){
+    //verifica e retorna se o usuario selecionou em algum card da mão. Caso retorne, retorna o indice do card da mão
+    int verifyCardHandClick(int *tela, int x, int y, int cardOn, int *cardOnPointer, bool *backFullCard, SpaceField sizeHandFields[5], int amountHand){
 
         if(cardOn == CARD_OFF){
-            for (size_t i = 0; i < 4; i++){
+            for (size_t i = 0; i < amountHand; i++){
                 if(x >= sizeHandFields[i].left && y >= sizeHandFields[i].top  && x <= sizeHandFields[i].right && y <= sizeHandFields[i].bottom){
                     if(sizeHandFields[i].active){
                         *cardOnPointer = CARD_ON;
@@ -494,6 +502,7 @@ int main()  {
         int ySize = 700; //GetSystemMetrics(SM_CYSCREEN);  760
         int xSize = ySize*1.8; //GetSystemMetrics(SM_CXSCREEN); 1360
         initwindow(xSize, ySize);
+        setbkcolor(COLOR(0,0,0));
 
         char tecla = 0;
         int pg = 2;
@@ -508,6 +517,7 @@ int main()  {
         int yDeckPos = ySize*0.26;
         int yHandPos = ySize*0.73;
         bool backFullCard = false;
+        bool turn = true;
         srand(time(0));
 
         Card card;
@@ -568,7 +578,13 @@ int main()  {
             void *cardGodMask = addImage(cardFull.X, cardFull.Y);
             deuses[deusIndex].image = cardGod;
             deuses[deusIndex].imageMask = cardGodMask;
+            void *cardGodCard = addImage(card.X, card.Y);
+            void *cardGodCardMask = addImage(card.X, card.Y);
+            deuses[deusIndex].imageCard = cardGodCard;
+            deuses[deusIndex].imageCardMask = cardGodCardMask;
             setupImage(cardFull.X, cardFull.Y, deuses[deusIndex].image, deuses[deusIndex].imageMask, deuses[deusIndex].nick, "images/cardFaceUpMask.bmp");
+            setupImage(card.X, card.Y, deuses[deusIndex].imageCard, deuses[deusIndex].imageCardMask, deuses[deusIndex].nick, "images/cardFaceUpMask.bmp");
+
         }
 
         setupImage(card.X, card.Y, cardFaceUp, cardFaceUpMask, "images/deusCard.bmp", "images/cardFaceUpMask.bmp");
@@ -595,13 +611,23 @@ int main()  {
     //============================================================================
 
     //Construindo a mão própria e do adversário
+        SpaceField deckSize;
+        new_SpaceField(xSize*0.53, ySize/2, &deckSize);
+        SpaceField deckEnemySize;
+        new_SpaceField(deckSize.left, deckSize.top - card.Y - card.spaceY, &deckEnemySize);
+
         Card deck[20];
         buildDeck(deck, deuses);
-        int amountHand = 3;
 
-        
+        int amountHand = 3;
+        int amountDeck = 20;
+
         SpaceField sizeHandFields[5];
         new_SpaceHandFields(xSize, ySize/2 + card.Y + card.spaceY, card, sizeHandFields);
+        sizeHandFields[0].card = deck[0];
+        sizeHandFields[1].card = deck[1];
+        sizeHandFields[2].card = deck[2];
+        sizeHandFields[3].card = deck[3];
         SpaceField sizeHandFieldsEnemy[5];
         new_SpaceHandFields(xSize, card.spaceY, card, sizeHandFieldsEnemy);
     //============================================================================
@@ -613,7 +639,7 @@ int main()  {
 
     while(tecla != 27) {
 
-    //COR DO CAMPO E INICIO DO JOGO    
+    //COR DO CAMPO E INICIO DO JOGO
         if (pg == 1) pg = 2; else pg=1;
         setactivepage(pg);
         cleardevice();
@@ -647,34 +673,41 @@ int main()  {
         if(tela == TELA_DUELO || tela == TELA_FADE_IN){
 
             //Deck
-            putCardField(xSize*0.53, ySize/2, cardfaceDown, cardfaceDownMask);
-            putCardField(xSize*0.53, (ySize/2) - card.Y - card.spaceY, cardfaceDownEnemy, cardfaceDownMaskEnemy);
+            putCardField(deckSize.left, deckSize.top, cardfaceDown, cardfaceDownMask);
+            putCardField(deckEnemySize.left, deckEnemySize.top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
 
             //Mão
-            for (size_t i = 0; i < 4; i++)
+            for (size_t i = 0; i < amountHand; i++)
             {
-                putCardField(sizeHandFields[i].left, sizeHandFields[i].top, cardFaceUp, cardFaceUpMask);
+                putCardField(sizeHandFields[i].left, sizeHandFields[i].top, sizeHandFields[i].card.deus.imageCard, sizeHandFields[i].card.deus.imageCardMask);
                 putCardField(sizeHandFieldsEnemy[i].left, sizeHandFieldsEnemy[i].top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
             }
 
+        //CONTROLE (MOUSE)
             int posClickX = 0;
             int posClickY = 0;
             bool clickOn = ismouseclick(WM_LBUTTONDOWN);
             if(clickOn){
                 getmouseclick(WM_LBUTTONDOWN, posClickX, posClickY);
                 if(cardField == BLANK_CLICK){
-                    cardHand = verifyCardHandClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeHandFields);
+                    cardHand = verifyCardHandClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeHandFields, amountHand);
+                }
+                if(cardHand == BLANK_CLICK){
+                    cardField = verifyCardFieldClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
                 }
                 if(cardHand == BLANK_CLICK){
                     cardField = verifyCardFieldClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
                 }
             }
+        //============================================================================
 
             selectCardField(xSize, cardOn, cardField, sizeFields, cardFull, &cardFull, backFullCard, &backFullCard);
             selectCardHand(xSize, cardOn, cardHand, sizeHandFields, cardFull, &cardFull, backFullCard, &backFullCard);
 
-            putCardField(cardFull.spaceX, cardFull.spaceY, deuses[JACI].image, deuses[JACI].imageMask);
-            putCardField(cardFull.spaceX, cardFull.spaceY, cardAttackPoints, cardAttackPointsMask);}
+            putCardField(cardFull.spaceX, cardFull.spaceY, deuses[sizeHandFields[cardHand].card.deus.id].image, deuses[sizeHandFields[cardHand].card.deus.id].imageMask);
+            putCardField(cardFull.spaceX, cardFull.spaceY, cardAttackPoints, cardAttackPointsMask);
+        }
+
     //============================================================================
 
     //FADE IN FADE OUT
