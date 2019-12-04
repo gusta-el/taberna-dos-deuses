@@ -1,0 +1,50 @@
+1
+Kukulcán - A Serpente Alada
+Kukulcán, com seus ventos da mudança, pode trocar uma carta no campo adversário com uma carta no seu campo.
+3
+3
+0
+1
+false
+0
+0
+2
+Camazotz - Deus Morcego
+Caso um alvo estiver com menos de 25% de pontos de vida, ele o executa instantaneamente.
+6
+4
+0
+1
+false
+0
+0
+3
+Ixtab - Deusa do Suicídio
+Ao ser invocada, faz com que uma carta dê dano a si mesmo
+0
+7
+0
+1
+false
+0
+0
+4
+Ixchel - Deusa da Medicina
+Seleciona uma carta aliada e a cura por 50% dos pontos de vida. Ao usar esse efeito, deve-se esperar 2 rodadas para usar novamente.
+2
+3
+0
+1
+false
+0
+0
+5
+Xaman Ek - Deus dos viajantes e mercadores
+Ao ser invocado em campo, Xaman Ek conjura o totem do mercador, que possui 0 de ataque e 4 de vida..
+2
+3
+0
+1
+false
+0
+0

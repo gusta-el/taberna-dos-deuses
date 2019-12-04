@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1573275659 source:c:\users\gustavo cabrera\desktop\workspace-codeblock\taberna-dos-deuses\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+

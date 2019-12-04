@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1572810196 source:c:\users\gustavocabrera\desktop\testesmitologia\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+
+1574310586 source:c:\users\gustavo cabrera\desktop\workspace-codeblock\taberna-dos-deuses\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+
+1575415838 source:c:\users\gustavocabrera\documents\jogos\taberna-dos-deuses\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+	<string.h>
+	<windows.h>
+	<Mmsystem.h>
+
