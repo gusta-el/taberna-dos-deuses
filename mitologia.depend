@@ -17,7 +17,31 @@
 	<iostream>
 	<time.h>
 
-1575072572 source:c:\users\gustavocabrera\documents\jogos\taberna-dos-deuses\main.cpp
+1575415838 source:c:\users\gustavocabrera\documents\jogos\taberna-dos-deuses\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+	<string.h>
+	<windows.h>
+	<Mmsystem.h>
+
+1575475693 source:c:\users\gustavo cabrera\documents\taverna dos deuses\taberna-dos-deuses\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	<math.h>
+	<conio.h>
+	<iostream>
+	<time.h>
+	<string.h>
+	<windows.h>
+	<Mmsystem.h>
+
+1575591329 source:c:\users\gustavocabrera\desktop\nova pasta (2)\taberna-dos-deuses\main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<graphics.h>

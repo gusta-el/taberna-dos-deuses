@@ -9,7 +9,6 @@
 #include <windows.h>
 #include <Mmsystem.h>
 
-
 //CONSTANTES
     #define ESC = 27
     #define QTD_GODS 5
@@ -18,6 +17,10 @@
     #define TELA_DUELO 1
     #define TELA_FADE_OUT 2
     #define TELA_FADE_IN 3
+    #define TELA_CREDITOS 4
+    #define TELA_OPCOES 5
+    #define TELA_DERROTA 6
+    #define TELA_VITORIA 7
 
     #define MAX_HAND 4
 
@@ -25,11 +28,17 @@
     #define IMAGEM_JOGAR_SELECIONADO 1
     #define IMAGEM_OPCOES_SELECIONADO 2
     #define IMAGEM_CREDITOS_SELECIONADO 3
+    #define IMAGEM_TELA_CREDITOS 4
+    #define IMAGEM_TELA_OPCOES 5
+    #define IMAGEM_TELA_OPCOES_ON 6
+    #define IMAGEM_TELA_OPCOES_OFF 7
 
     #define GOD_CARD 0
     #define PRAYER_CARD 1
     #define MAGIC_CARD 2
     #define DEFAULT_CARD 3
+    #define GOD_CARD_ENEMY 4
+    #define MAGIC_CARD_ENEMY 5
 
     #define JAPONESE 0
     #define MAYA 1
@@ -41,20 +50,10 @@
     #define FIELD_HIDE 3
     #define GRAVEYARD 4
 
-    #define COLOSSO 0
-    #define ESCUDO_DIVINO 1
-    #define FURIA_DA_HARPIA 2
-    #define GRITO_DE_GUERRA 3
-    #define ENCORAJAR 4
-    #define MASSACRE 5
-    #define ULTIMO_SUSPIRO 6
-    #define MORTE_SUBITA 7
-
     #define CARD_ON 1
     #define CARD_OFF 0
     #define BLANK_CLICK 20
 
-    #define ABLE_TO_CLICK 21
 
     #define CARD_FULL 0
     #define CARD_FACE_UP 1
@@ -78,11 +77,6 @@
     #define GUARACI 12
     #define ANHANGA 13
     #define RUDA 14
-
-    #define TIME_NORMAL 0
-    #define TIME_ATTACK 1
-    #define TIME_ATTACKING 2
-    #define TIME_BACK_ATTACK 3
 
     #define BOTAO_INVOCAR 0
     #define BOTAO_ATACAR 1
@@ -119,7 +113,6 @@
             int specialPower;
             int mithology;
             bool enableAttack;
-            int teste;
             int x;
             int y;
             char *nick;
@@ -129,7 +122,6 @@
             void *image_card_mask;
     };
 
-
     void new_Deus(Deus *deus, int id, char *path, int attackPoints, int lifePoints, int specialPower, int mithology){
 
         deus->id = id;
@@ -138,56 +130,56 @@
         deus->lifePoints = lifePoints;
         deus->specialPower = specialPower;
         deus->mithology = mithology;
-        deus->enableAttack = false;
+        deus->enableAttack = true;
     }
 
     void new_Deuses(Deus deuses[15]){
 
         Deus kukulcan;
         new_Deus(&kukulcan, KUKULCAN,
-        "images/deuses/kukulcan.bmp", generateRandom(1,10), generateRandom(1,10), 0, MAYA);
+        "images/deuses/kukulcan.bmp", 10, 5, 3, MAYA);
         Deus camazotz;
         new_Deus(&camazotz, CAMAZOTZ,
-        "images/deuses/camazotz.bmp", generateRandom(1,10), generateRandom(1,10), 0, MAYA);
+        "images/deuses/camazotz.bmp", 8, 4, 2, MAYA);
         Deus ixtab;
         new_Deus(&ixtab, IXTAB,
-        "images/deuses/ixtab.bmp", generateRandom(1,10), generateRandom(1,10), 0, MAYA);
+        "images/deuses/ixtab.bmp", 6, 6, 1, MAYA);
         Deus ixchel;
         new_Deus(&ixchel, IXCHEL,
-        "images/deuses/ixchel.bmp", generateRandom(1,10), generateRandom(1,10), 0, MAYA);
+        "images/deuses/ixchel.bmp", 4, 8, 1, MAYA);
         Deus xamanEk;
         new_Deus(&xamanEk, XAMN_EK,
-        "images/deuses/xaman_ek.bmp", generateRandom(1,10), generateRandom(1,10), 0, MAYA);
+        "images/deuses/xaman_ek.bmp", 2, 10, 2, MAYA);
         Deus izanagi;
         new_Deus(&izanagi, IZANAGI,
-        "images/deuses/izanagi.bmp", generateRandom(1,10), generateRandom(1,10), 0, JAPONESE);
+        "images/deuses/izanagi.bmp", 5, 6, 3, JAPONESE);
         Deus izanami;
         new_Deus(&izanami, IZANAMI,
-        "images/deuses/izanami.bmp", generateRandom(1,10), generateRandom(1,10), 0, JAPONESE);
+        "images/deuses/izanami.bmp", 3, 5, 2, JAPONESE);
         Deus amaterasu;
         new_Deus(&amaterasu, AMATERASU,
-        "images/deuses/amaterasu.bmp", generateRandom(1,10),generateRandom(1,10), 0, JAPONESE);
+        "images/deuses/amaterasu.bmp", 6, 6, 2, JAPONESE);
         Deus tsukuyomi;
         new_Deus(&tsukuyomi, TSUKI_YOMI,
-        "images/deuses/tsukuyomi.bmp", generateRandom(1,10),generateRandom(1,10), 0, JAPONESE);
+        "images/deuses/tsukuyomi.bmp", 8, 1, 1, JAPONESE);
         Deus susano;
         new_Deus(&susano, SUSANO,
-        "images/deuses/susano.bmp", generateRandom(1,10),generateRandom(1,10), 0, JAPONESE);
+        "images/deuses/susano.bmp", 7, 7, 1, JAPONESE);
         Deus tupa;
         new_Deus(&tupa, TUPA,
-        "images/deuses/tupa.bmp", generateRandom(1,10),generateRandom(1,10), 0, BRAZILIAN);
+        "images/deuses/tupa.bmp", 3, 7, 3, BRAZILIAN);
         Deus jaci;
         new_Deus(&jaci, JACI,
-        "images/deuses/jaci.bmp", generateRandom(1,10),generateRandom(1,10), 0, BRAZILIAN);
+        "images/deuses/jaci.bmp", 9, 5, 2, BRAZILIAN);
         Deus guaraci;
         new_Deus(&guaraci, GUARACI,
-        "images/deuses/guaraci.bmp", generateRandom(1,10),generateRandom(1,10), 0, BRAZILIAN);
+        "images/deuses/guaraci.bmp", 5, 6, 1, BRAZILIAN);
         Deus anhanga;
         new_Deus(&anhanga, ANHANGA,
-        "images/deuses/anhanga.bmp", generateRandom(1,10),generateRandom(1,10), 0, BRAZILIAN);
+        "images/deuses/anhanga.bmp", 5, 9, 2, BRAZILIAN);
         Deus ruda;
         new_Deus(&ruda, RUDA,
-        "images/deuses/ruda.bmp", generateRandom(1,10),generateRandom(1,10), 0, BRAZILIAN);
+        "images/deuses/ruda.bmp", 3, 4, 1, BRAZILIAN);
 
         deuses[KUKULCAN] = kukulcan;
         deuses[CAMAZOTZ] = camazotz;
@@ -273,6 +265,57 @@
 
     }
 
+    void new_Deuses_Imagem_Enemy(Deus_Imagem deuses[15]){
+
+        Deus_Imagem kukulcan;
+        new_Deus_Imagem(&kukulcan, KUKULCAN, "images/deuses/holograma_enemy/kukulcan.bmp", "images/deuses/holograma_enemy/kukulcan_mask.bmp");
+        Deus_Imagem camazotz;
+        new_Deus_Imagem(&camazotz, CAMAZOTZ, "images/deuses/holograma_enemy/camazotz.bmp", "images/deuses/holograma_enemy/camazotz_mask.bmp");
+        Deus_Imagem ixtab;
+        new_Deus_Imagem(&ixtab, IXTAB, "images/deuses/holograma_enemy/ixtab.bmp", "images/deuses/holograma_enemy/ixtab_mask.bmp");
+        Deus_Imagem ixchel;
+        new_Deus_Imagem(&ixchel, IXCHEL, "images/deuses/holograma_enemy/ixchel.bmp", "images/deuses/holograma_enemy/ixchel_mask.bmp");
+        Deus_Imagem xamanEk;
+        new_Deus_Imagem(&xamanEk, XAMN_EK, "images/deuses/holograma_enemy/xaman_ek.bmp", "images/deuses/holograma_enemy/xaman_ek_mask.bmp");
+        Deus_Imagem izanagi;
+        new_Deus_Imagem(&izanagi, IZANAGI, "images/deuses/holograma_enemy/izanagi.bmp", "images/deuses/holograma_enemy/izanagi_mask.bmp");
+        Deus_Imagem izanami;
+        new_Deus_Imagem(&izanami, IZANAMI, "images/deuses/holograma_enemy/izanami.bmp", "images/deuses/holograma_enemy/izanami_mask.bmp");
+        Deus_Imagem amaterasu;
+        new_Deus_Imagem(&amaterasu, AMATERASU, "images/deuses/holograma_enemy/amaterasu.bmp", "images/deuses/holograma_enemy/amaterasu_mask.bmp");
+        Deus_Imagem tsukuyomi;
+        new_Deus_Imagem(&tsukuyomi, TSUKI_YOMI, "images/deuses/holograma_enemy/tsukuyomi.bmp", "images/deuses/holograma_enemy/tsukuyomi_mask.bmp");
+        Deus_Imagem susano;
+        new_Deus_Imagem(&susano, SUSANO, "images/deuses/holograma_enemy/susano.bmp", "images/deuses/holograma_enemy/susano_mask.bmp");
+        Deus_Imagem tupa;
+        new_Deus_Imagem(&tupa, TUPA, "images/deuses/holograma_enemy/tupa.bmp", "images/deuses/holograma_enemy/tupa_mask.bmp");
+        Deus_Imagem jaci;
+        new_Deus_Imagem(&jaci, JACI, "images/deuses/holograma_enemy/jaci.bmp", "images/deuses/hologholograma_enemyrama/jaci_mask.bmp");
+        Deus_Imagem guaraci;
+        new_Deus_Imagem(&guaraci, GUARACI, "images/deuses/holograma_enemy/guaraci.bmp", "images/deuses/holograma_enemy/guaraci_mask.bmp");
+        Deus_Imagem anhanga;
+        new_Deus_Imagem(&anhanga, ANHANGA, "images/deuses/holograma_enemy/anhanga.bmp", "images/deuses/holograma_enemy/anhanga_mask.bmp");
+        Deus_Imagem ruda;
+        new_Deus_Imagem(&ruda, RUDA, "images/deuses/holograma_enemy/ruda.bmp", "images/deuses/holograma_enemy/ruda_mask.bmp");
+
+        deuses[KUKULCAN] = kukulcan;
+        deuses[CAMAZOTZ] = camazotz;
+        deuses[IXTAB] = ixtab;
+        deuses[IXCHEL] = ixchel;
+        deuses[XAMN_EK] = xamanEk;
+        deuses[IZANAGI] = izanagi;
+        deuses[IZANAMI] = izanami;
+        deuses[AMATERASU] = amaterasu;
+        deuses[TSUKI_YOMI] = tsukuyomi;
+        deuses[SUSANO] = susano;
+        deuses[TUPA] = tupa;
+        deuses[JACI] = jaci;
+        deuses[GUARACI] = guaraci;
+        deuses[ANHANGA] = anhanga;
+        deuses[RUDA] = ruda;
+
+    }
+
     struct Holograma{
         float velocity_holograma;
         float time_holograma;
@@ -296,43 +339,84 @@
         int id;
         int mithology;
         char * nick;
+        char * nick_mask;
+        char * nick_card;
         int manaValue;
         int x;
         int y;
-        void * image;
-        void * imageMask;
-        void * imageCard;
-        void * imageCardMask;
-
     };
 
-    void new_Devocao(Devocao *devocao, int id, char * nick, int manaValue, int mithology){
+    void new_Devocao(Devocao *devocao, int id, int manaValue, int mithology, char * nick, char * nick_mask, char * nick_card){
         devocao->id = id;
-        devocao->nick = nick;
         devocao->manaValue = manaValue;
         devocao->mithology = mithology;
+        devocao->nick = nick;
+        devocao->nick_mask = nick_mask;
+        devocao->nick_card = nick_card;
     }
 
     void new_Devocoes(Devocao devocoes[3]){
 
-        Devocao devocao_japonesa_1;
-        new_Devocao(&devocao_japonesa_1, 0,
-        "images/adoradores/adorador_japones.bmp", 3, JAPONESE);
+        Devocao devocao_japonesa;
+        new_Devocao(&devocao_japonesa, 0, 1, JAPONESE,
+        "images/adoradores/adorador_japones.bmp",
+        "images/adoradores/adorador_japones_mask.bmp",
+        "images/adoradores/adorador_japones_card.bmp");
 
-        Devocao devocao_maia_1;
-        new_Devocao(&devocao_maia_1, 1,
-        "images/adorador_maia/kukulcan.bmp", 3, MAYA);
+        Devocao devocao_maia;
+        new_Devocao(&devocao_maia, 1, 1, MAYA,
+        "images/adoradores/adorador_maia.bmp",
+        "images/adoradores/adorador_maia_mask.bmp",
+        "images/adoradores/adorador_maia_card.bmp");
 
-        Devocao devocao_brasileira_1;
-        new_Devocao(&devocao_brasileira_1, 2,
-        "images/adoradores/adorador_brasileiro.bmp", 3, BRAZILIAN);
+        Devocao devocao_brasileira;
+        new_Devocao(&devocao_brasileira, 2, 1, BRAZILIAN,
+        "images/adoradores/adorador_brasil.bmp",
+        "images/adoradores/adorador_brasil_mask.bmp",
+        "images/adoradores/adorador_brasil_card.bmp");
 
-        devocoes[JAPONESE] = devocao_japonesa_1;
-        devocoes[MAYA] = devocao_maia_1;
-        devocoes[BRAZILIAN] = devocao_brasileira_1;
+        devocoes[JAPONESE] = devocao_japonesa;
+        devocoes[MAYA] = devocao_maia;
+        devocoes[BRAZILIAN] = devocao_brasileira;
 
     }
 
+    void new_Devocoes_Enemy(Devocao devocoes[3]){
+
+        Devocao devocao_japonesa;
+        new_Devocao(&devocao_japonesa, 0, 1, JAPONESE,
+        "images/adoradores/enemy/adorador_japones.bmp",
+        "images/adoradores/enemy/adorador_japones_mask.bmp",
+        "images/adoradores/enemy/adorador_japones_card.bmp");
+
+        Devocao devocao_maia;
+        new_Devocao(&devocao_maia, 1, 2, MAYA,
+        "images/adoradores/enemy/adorador_maia.bmp",
+        "images/adoradores/enemy/adorador_maia_mask.bmp",
+        "images/adoradores/enemy/adorador_maia_card.bmp");
+
+        Devocao devocao_brasileira;
+        new_Devocao(&devocao_brasileira, 2, 3, BRAZILIAN,
+        "images/adoradores/enemy/adorador_brasil.bmp",
+        "images/adoradores/enemy/adorador_brasil_mask.bmp",
+        "images/adoradores/enemy/adorador_brasil_card.bmp");
+
+        devocoes[JAPONESE] = devocao_japonesa;
+        devocoes[MAYA] = devocao_maia;
+        devocoes[BRAZILIAN] = devocao_brasileira;
+
+    }
+
+    struct Devocao_Imagem {
+        int id;
+        void * image;
+        void * image_mask;
+        void * image_card;
+        void * image_card_mask;
+        void * image_card_full;
+        void * image_card_mask_full;
+
+    };
 
 //============================================================================
 
@@ -345,7 +429,7 @@
         int limitSpace;
         int passo;
         Deus deus;
-        //Devocao devocao;
+        Devocao devocao;
         int type;
     };
 
@@ -361,17 +445,163 @@
 
     }
 
-    void buildDeck(Card deck[20], Deus deuses[15]){
+    void buildDeck(Card deck[20], Deus deuses[15], Devocao devocao[3]){
+
+        int deus_or_magic = 0;
+        int cont_god = 0;
+
+        int aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 3){
+            aleatorio = rand();
+            deck[0].devocao = devocao[aleatorio];
+            deck[0].type = MAGIC_CARD;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 15){
+            aleatorio = rand();
+            deck[1].devocao = devocao[aleatorio];
+            deck[1].deus = deuses[aleatorio];
+            deck[1].type = GOD_CARD;
+            cont_god++;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 3){
+            aleatorio = rand();
+            deck[2].devocao = devocao[aleatorio];
+            deck[2].type = MAGIC_CARD;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 15){
+            aleatorio = rand();
+            deck[3].devocao = devocao[aleatorio];
+            deck[3].deus = deuses[aleatorio];
+            deck[3].type = GOD_CARD;
+            cont_god++;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 3){
+            aleatorio = rand();
+            deck[4].devocao = devocao[aleatorio];
+            deck[4].type = MAGIC_CARD;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 15){
+            aleatorio = rand();
+            deck[5].devocao = devocao[aleatorio];
+            deck[5].deus = deuses[aleatorio];
+            deck[5].type = GOD_CARD;
+            cont_god++;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 3){
+            aleatorio = rand();
+            deck[6].devocao = devocao[aleatorio];
+            deck[6].type = MAGIC_CARD;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 15){
+            aleatorio = rand();
+            deck[7].devocao = devocao[aleatorio];
+            deck[7].deus = deuses[aleatorio];
+            deck[7].type = GOD_CARD;
+            cont_god++;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 3){
+            aleatorio = rand();
+            deck[8].devocao = devocao[aleatorio];
+            deck[8].type = MAGIC_CARD;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 15){
+            aleatorio = rand();
+            deck[9].devocao = devocao[aleatorio];
+            deck[9].deus = deuses[aleatorio];
+            deck[9].type = GOD_CARD;
+            cont_god++;
+        }
+
+        aleatorio = -1;
+        while(aleatorio >= 0 && aleatorio < 3){
+            aleatorio = rand();
+            deck[10].devocao = devocao[aleatorio];
+            deck[10].type = MAGIC_CARD;
+        }
+
+        for (size_t i = 11; i < 20; i++)
+        {
+            aleatorio = -1;
+            while(aleatorio >= 0 && aleatorio < 15){
+                aleatorio = rand();
+                deck[9].devocao = devocao[aleatorio];
+                deck[9].deus = deuses[aleatorio];
+                deck[9].type = GOD_CARD;
+                cont_god++;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
         for(int i = 0; i < 20; i ++){
-            int num = rand();
-                if(num >= 0 && num < 9){
-                    deck[i].deus = deuses[num];
+            deus_or_magic = rand();
+            if(deus_or_magic % 2 == 0 || cont_god == 13){
+                aleatorio = rand();
+                if(aleatorio >= 0 && aleatorio < 3){
+                    deck[i].devocao = devocao[aleatorio];
+                    deck[i].type = MAGIC_CARD;
+                } else {
+                    i--;
+                }
+
+            } else {
+
+                aleatorio = rand();
+                if(aleatorio >= 0 && aleatorio < 15){
+                    deck[i].deus = deuses[aleatorio];
                     deck[i].type = GOD_CARD;
+                    cont_god++;
+                } else {
+                    i--;
+                }
+
+            }
+        }
+    }
+
+    void buildDeckEnemy(Card deck[10], Deus deuses[15]){
+
+        int aleatorio = 0;
+        int deus_or_magic = 0;
+        int cont_god = 0;
+
+        for(int i = 0; i < 20; i ++){
+                aleatorio = rand();
+                if(aleatorio >= 0 && aleatorio < 15){
+                    deck[i].deus = deuses[aleatorio];
+                    deck[i].type = GOD_CARD;
+                    cont_god++;
                 } else {
                     i--;
                 }
         }
     }
+
 //============================================================================
 
 //METODOS PARA O CAMPO DE BATALHA
@@ -436,16 +666,16 @@
             index++;
         }
         posXDark = xSize*0.025;
-        posYDark = ySize/2 - card.Y - card.spaceY;
+        posYDark = ySize/2 - card.Y - (4*(card.spaceY/5));
         for (size_t j = 0; j < 5; j++){
-            new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false, DEFAULT_CARD);
+            new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false, GOD_CARD_ENEMY);
             posXDark = posXDark + card.X*1.2;
             index++;
         }
         posXDark = xSize*0.025;
         posYDark = posYDark - card.Y - card.spaceY;
         for (size_t j = 0; j < 5; j++){
-            new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false, DEFAULT_CARD);
+            new_SpaceField(posXDark, posYDark, posXDark + card.X, posYDark + card.Y, &sizeFields[index], false, MAGIC_CARD_ENEMY);
             posXDark = posXDark + card.X*1.2;
             index++;
         }
@@ -454,7 +684,7 @@
 
     void new_SpaceHandFields(int xSize, int yHandPos, Card card, SpaceField sizeHandFields[5]){
 
-        int xHandPos = xSize*0.53;
+        int xHandPos = xSize*0.56;
         int index = 0;
 
             for (size_t j = 0; j < 5; j++){
@@ -488,6 +718,21 @@
         } else {
             *cardOnPointer = CARD_OFF;
             *backFullCard = true;
+        }
+
+        return BLANK_CLICK;
+    }
+
+    int verifyAttack(int cardAttack, int x, int y, SpaceField sizeFields[20]){
+
+        if(cardAttack == BLANK_CLICK){
+            for (size_t i = 10; i < 15; i++){
+                if(x >= sizeFields[i].left && y >= sizeFields[i].top  && x <= sizeFields[i].right && y <= sizeFields[i].bottom){
+                    if(sizeFields[i].active){
+                        return i;
+                    }
+                }
+            }
         }
 
         return BLANK_CLICK;
@@ -567,6 +812,16 @@
 
     }
 
+    void print_score(int x, int y, int pontuacao, int font_size){
+
+            char score[2];
+            sprintf(score, "%d", pontuacao);
+            settextstyle(COMPLEX_FONT, HORIZ_DIR, font_size);
+            setcolor(WHITE);
+            outtextxy(x , y , score);
+
+    }
+
     void withdrawCard(){
 
     }
@@ -609,24 +864,24 @@
 //METODOS PARA O MENU INICIAL
     int verifyMenuClick(int x, int y, void *menuImages[4], int tela){
 
-            if(mousex() > x*0.07 && mousex() < x*0.22 && mousey() > 0.37*y && mousey() < 0.46*y){
+            if(mousex() > x*0.13 && mousex() < x*0.33 && mousey() > y/2 && mousey() < 0.7*y){
                 putimage(0, 0, menuImages[IMAGEM_JOGAR_SELECIONADO], 0);
                 if(ismouseclick(WM_LBUTTONDOWN)){
                     tela =  TELA_FADE_OUT;
                 }
             }
 
-            if(mousex() > x*0.07 && mousex() < x*0.24 && mousey() > 0.50*y && mousey() < 0.59*y){
+            if(mousex() > x*0.4 && mousex() < x*0.6 && mousey() > y/2 && mousey() < 0.7*y){
                 putimage(0, 0, menuImages[IMAGEM_OPCOES_SELECIONADO], 0);
                 if(ismouseclick(WM_LBUTTONDOWN)){
-                    tela =  TELA_FADE_OUT;
+                    tela =  TELA_OPCOES;
                 }
             }
 
-            if(mousex() > x*0.07 && mousex() < x*0.27 && mousey() > 0.63*y && mousey() < 0.72*y){
+            if(mousex() > x*0.67 && mousex() < x*0.87 && mousey() > y/2 && mousey() < 0.7*y){
                 putimage(0, 0, menuImages[IMAGEM_CREDITOS_SELECIONADO], 0);
                 if(ismouseclick(WM_LBUTTONDOWN)){
-                    tela =  TELA_FADE_OUT;
+                    tela =  TELA_CREDITOS;
                 }
             }
 
@@ -694,8 +949,7 @@
 
     updateButtons(int qtd_botoes, Botao botoes[5], int xSize, int ySize){
 
-        for (size_t i = 0; i < qtd_botoes; i++)
-        {
+        for (size_t i = 0; i < qtd_botoes; i++){
             if(botoes[i].available == true){
                 if(verifyMouseCheckButton(xSize - botoes[i].xSize, botoes[i].yPasso, botoes[i].xSize, botoes[i].ySize)){
                     putimage(xSize-botoes[i].xSize, botoes[i].yPasso, botoes[i].imagemBotaoOff, COPY_PUT);
@@ -703,24 +957,35 @@
                      putimage(xSize-botoes[i].xSize, botoes[i].yPasso, botoes[i].imagemBotaoOn, COPY_PUT);
                 }
             }
+
             if(i != BOTAO_DESISTIR){
                     botoes[i].available = false;
             }
-        }
 
+        }
     }
 
-    verifyAvailableButtons(int cardOn, int cardHand, SpaceField sizeHandFields[5], Botao botoes[5], bool turn){
+    verifyAvailableButtons(int cardOn, int cardField, SpaceField sizeFields[20], int cardHand, SpaceField sizeHandFields[5], Botao botoes[5], bool turn, int count_adoracoes[3]){
         if(cardOn == CARD_ON && cardHand != BLANK_CLICK){
             if(sizeHandFields[cardHand].card.type == MAGIC_CARD){
                 botoes[BOTAO_ATIVAR_EFEITO].available = true;
             }
 
             if(sizeHandFields[cardHand].card.type == GOD_CARD){
-                botoes[BOTAO_INVOCAR].available = true;
+                    botoes[BOTAO_INVOCAR].available = true;
+            }
+
+        }
+
+        if(cardOn == CARD_ON && cardField != BLANK_CLICK){
+            if(sizeFields[cardField].card.type == GOD_CARD && sizeFields[cardField].card.deus.enableAttack == true && cardField < 10){
+                botoes[BOTAO_ATACAR].available = true;
             }
         }
+
+        //sizeFields[cardField].card.deus.enableAttack
         botoes[BOTAO_FINALIZAR].available = turn;
+
     }
 
     int verifyButtonClick(int x, int y, int xSize, int ySize, Botao botoes[5]){
@@ -729,7 +994,6 @@
                 if(x >= xSize - botoes[i].xSize && y >= botoes[i].yPasso  && x <= xSize && y <= botoes[i].yPasso + botoes[i].ySize){
 
                         if(botoes[i].available){
-                            printf("Valor: %d \n", i);
                             return i;
                         }
                 }
@@ -748,7 +1012,6 @@
         void * imageLife;
         char * nickAttack;
         char * nickLife;
-
 
     };
 
@@ -804,9 +1067,9 @@
     void getVelocityHologram(Holograma holograma, Holograma * holograma_pointer, int cardY){
 
         if(holograma.velocity_holograma <= cardY && holograma.change_holograma == 0){
-            holograma_pointer->time_holograma =  2.5 + holograma.time_holograma;
+            holograma_pointer->time_holograma =  3.5 + holograma.time_holograma;
         } else {
-            holograma_pointer->time_holograma =  holograma.time_holograma - 2;
+            holograma_pointer->time_holograma =  holograma.time_holograma - 3;
             holograma_pointer->change_holograma = 1;
             if(holograma.velocity_holograma <= 0){
                 holograma_pointer->change_holograma = 0;
@@ -828,13 +1091,9 @@ int main()  {
         int fadeOut = 0;
         int passoDeck = 0;
         int fadeIn = 255;
-        int tela = TELA_MENU_PRINCIPAL;
-        int cardOn = CARD_OFF;
-        int cardField = BLANK_CLICK;
-        int cardHand = BLANK_CLICK;
-        int buttonSelected = BLANK_CLICK;
+
         int x, y, posXDark, posYDark;
-        int xDeckPos = xSize*0.53;
+        int xDeckPos = xSize*0.56;
         int yDeckPos = ySize*0.26;
         int yHandPos = ySize*0.73;
         int xBotaoSize = xSize/10;
@@ -842,15 +1101,35 @@ int main()  {
         int xLogoSize = xSize/4;
         int yLogoSize = ySize/7;
         int image_god_size = ySize*0.03;
+        bool acumula_mana = true;
 
+        int tela = TELA_MENU_PRINCIPAL;
+        int cardOn = CARD_OFF;
+        int cardField = BLANK_CLICK;
+        int cardHand = BLANK_CLICK;
+        int buttonSelected = BLANK_CLICK;
+        int attackSelected = BLANK_CLICK;
+        int pontos_vida = 20;
+        int pontos_vida_enemy = 10;
         bool backFullCard = false;
         bool turn = true;
-        bool withdraw = true;
+        bool withdraw = false;
+        bool attacking = false;
+
+        bool contra_ataque = false;
+        int contra_ataque_value = 0;
+        int passo_contra_ataque = 0;
+        bool ataque = false;
+        int ataque_value = 0;
+        int passo_ataque = 60;
+        int card_atacante = 0;
+        int card_atacado = 0;
+
 
         srand(time(0));
 
         Card card;
-        new_Card(&card, xSize*0.085, ySize*0.21, xSize*0.05, ySize*0.03, 0, 0, DEFAULT_CARD);
+        new_Card(&card, xSize*0.085, ySize*0.21, xSize*0.05, ySize*0.03, 0, 0, GOD_CARD);
         Card cardFull;
         new_Card(&cardFull, card.X*3, card.Y*3, xSize, (ySize/2) - (card.Y*1.5), card.X*7.5, 20, DEFAULT_CARD);
         SpaceField spaceField;
@@ -858,26 +1137,38 @@ int main()  {
         SpaceField sizeFields[20];
         new_SpaceFields(xSize, ySize, card, sizeFields);
 
-        int cardSize = imagesize(0, 0, card.X, card.Y);
-        int cardFullSize = imagesize(0, 0, cardFull.X, cardFull.Y);
-        int deusSize = imagesize(0, 0, card.X*0.8, card.Y*0.6);
-        int fieldSize = imagesize(0, 0, xSize, ySize);
-
         void *logo = addImage(xLogoSize, yLogoSize);
         void *logoMask = addImage(xLogoSize, yLogoSize);
 
         void *card_face_up = addImage(card.X, card.Y);
         void *card_face_up_mask = addImage(card.X, card.Y);
 
-        void *cardFaceUpFull = addImage(cardFull.X, cardFull.Y);
-        void *cardFaceUpMaskFull = addImage(cardFull.X, cardFull.Y);
-        void *cardAttackPoints = addImage(cardFull.X, cardFull.Y);
-        void *cardAttackPointsMask = addImage(cardFull.X, cardFull.Y);
+        void *player_life_image = addImage(xSize*0.175, ySize*0.057);
+        void *player_life_enemy_image = addImage(xSize*5.73, ySize*0.057);
+
+        void *count_mana_image = addImage(xSize*0.218, ySize*0.072);
+
+        void *espada = addImage(card.X/2, card.X/2);
+        void *espada_mask = addImage(card.X/2, card.X/2);
+
+        void *espada_full = addImage(xSize*0.07, xSize*0.07);
+        void *espada_mask_full = addImage(xSize*0.07, xSize*0.07);
+
+        void *credits_1 = addImage(ySize, ySize*0.96);
+        void *credits_mask_1 = addImage(ySize, ySize*0.96);
+
+        void *credits_2 = addImage(ySize, xSize*0.35);
+        void *credits_mask_2 = addImage(ySize, xSize*0.35);
+
         void *cardfaceDown = addImage(card.X, card.Y);
         void *cardfaceDownMask = addImage(card.X, card.Y);
         void *cardfaceDownEnemy = addImage(card.X, card.Y);
         void *cardfaceDownMaskEnemy = addImage(card.X, card.Y);
-        void *menuImages[4];
+        void *battle_field = addImage(xSize, ySize);
+        void *tela_derrota = addImage(xSize, ySize);
+        void *tela_vitoria = addImage(xSize, ySize);
+        void *menuImages[8];
+
         int qtd_botoes = 5;
         Botao botoes[qtd_botoes];
         int qtd_points = 11;
@@ -885,13 +1176,23 @@ int main()  {
         int qtd_deuses = 15;
         Deus deuses[qtd_deuses];
         Deus_Imagem deuses_holograma[qtd_deuses];
-        //Holograma hologramas[15];
-        //new_Hologramas(hologramas);
         Holograma holograma;
         new_Holograma(&holograma);
 
+        int qtd_devocoes = 3;
+        Devocao devocoes[qtd_devocoes];
+        Devocao_Imagem devocoes_imagem[qtd_devocoes];
+        Devocao devocoes_enemy[qtd_devocoes];
+        Devocao_Imagem devocoes_imagem_enemy[qtd_devocoes];
+
+        int count_adoracoes[3];
+        count_adoracoes[JAPONESE] = 0;
+        count_adoracoes[MAYA] = 0;
+        count_adoracoes[BRAZILIAN] = 0;
 
         PlaySound(TEXT("audio/SOUNDTRACK/loading.wav"), 0, SND_LOOP | SND_ASYNC);
+
+
     //============================================================================
 
     //LOADING...
@@ -959,10 +1260,27 @@ int main()  {
                             setupOneImage(xSize, ySize, optionsOpImage, "images/menu/opcoesSelected.bmp");
                             setupOneImage(xSize, ySize, creditsOpImage, "images/menu/creditosSelected.bmp");
 
+                            void *tela_creditos = addImage(xSize, ySize);
+                            void *tela_opcoes = addImage(xSize, ySize);
+                            void *tela_opcoes_on = addImage(xSize, ySize);
+                            void *tela_opcoes_off = addImage(xSize, ySize);
+
+                            setupOneImage(xSize, ySize, tela_creditos, "images/menu/tela_creditos.bmp");
+                            setupOneImage(xSize, ySize, tela_opcoes, "images/menu/tela_opcoes.bmp");
+                            setupOneImage(xSize, ySize, tela_opcoes_on, "images/menu/tela_opcoes_soundOn.bmp");
+                            setupOneImage(xSize, ySize, tela_opcoes_off, "images/menu/tela_opcoes_soundOff.bmp");
+
                             menuImages[IMAGEM_MENU_SEM_SELECAO] = menuImage;
                             menuImages[IMAGEM_JOGAR_SELECIONADO] = jogarOpImage;
                             menuImages[IMAGEM_OPCOES_SELECIONADO] = optionsOpImage;
                             menuImages[IMAGEM_CREDITOS_SELECIONADO] = creditsOpImage;
+                            menuImages[IMAGEM_TELA_CREDITOS] = tela_creditos;
+                            menuImages[IMAGEM_TELA_OPCOES] = tela_opcoes;
+                            menuImages[IMAGEM_TELA_OPCOES_ON] = tela_opcoes_on;
+                            menuImages[IMAGEM_TELA_OPCOES_OFF] = tela_opcoes_off;
+
+                            setupImage(ySize, ySize*0.96, credits_1, credits_mask_1, "images/menu/credits_1.bmp", "images/menu/credits_1_mask.bmp");
+                            setupImage(ySize, xSize*0.35, credits_2, credits_mask_2, "images/menu/credits_2.bmp", "images/menu/credits_2_mask.bmp");
 
                             menu_carregado = true;
         //============================================================================
@@ -985,6 +1303,11 @@ int main()  {
                                 setupOneImage(botoes[i].xSize, botoes[i].ySize, botoes[i].imagemBotaoOff, botoes[i].nickOff);
                             }
 
+                            setupImage(card.X/2, card.X/2, espada, espada_mask, "images/botoes/espada.bmp", "images/botoes/espada_mask.bmp");
+                            setupImage(xSize*0.07, xSize*0.07, espada_full, espada_mask_full, "images/botoes/espada_full.bmp", "images/botoes/espada_full_mask.bmp");
+
+                            setupOneImage(xSize*0.218, ySize*0.072, count_mana_image, "images/pontuacoes/adoracao.bmp");
+
                             funcoes_carregado = true;
         //============================================================================
                 }
@@ -994,6 +1317,9 @@ int main()  {
                         int xText = textwidth("Carregando imagens do campo de batalha...");
                         outtextxy (xSize/2-(xText/2), ySize/2+(2*yText)+5, "Carregando imagens do campo de batalha...");
                         setactivepage(pagina3);
+
+                        setupOneImage(xSize*0.175, ySize*0.057, player_life_image, "images/pontuacoes/vida_jogador.bmp");
+                        setupOneImage(xSize*0.175, ySize*0.057, player_life_enemy_image, "images/pontuacoes/vida_jogador_enemy.bmp");
 
                         //CARREGANDO PONTUACAO
                             new_Points(pontos);
@@ -1039,12 +1365,41 @@ int main()  {
                                 void *deus_holograma_mask = addImage(card.X+image_god_size, card.X+image_god_size);
                                 deuses_holograma[deusIndex].imagem_holograma = deus_holograma;
                                 deuses_holograma[deusIndex].imagem_holograma_mask = deus_holograma_mask;
-
                                 setupImage(card.X+image_god_size, card.X+image_god_size, deuses_holograma[deusIndex].imagem_holograma, deuses_holograma[deusIndex].imagem_holograma_mask, deuses_holograma[deusIndex].path, deuses_holograma[deusIndex].path_mask);
 
                             }
                         //============================================================================
 
+                        //CARREGANDO DEVOCOES
+                            new_Devocoes(devocoes);
+
+                            for (size_t devocao_index = 0; devocao_index < qtd_devocoes; devocao_index++){
+                                void *image_card_full = addImage(cardFull.X, cardFull.Y);
+                                void *image_card_full_mask = addImage(cardFull.X, cardFull.Y);
+                                void *image_card = addImage(card.X, card.Y);
+                                void *image_card_mask = addImage(card.X, card.Y);
+
+                                void *devocao_holograma = addImage(card.X+image_god_size, card.X+image_god_size);
+                                void *devocao_holograma_mask = addImage(card.X+image_god_size, card.X+image_god_size);
+
+                                devocoes_imagem[devocao_index].image_card_full = image_card_full;
+                                devocoes_imagem[devocao_index].image_card_mask_full = image_card_full_mask;
+                                devocoes_imagem[devocao_index].image_card = image_card;
+                                devocoes_imagem[devocao_index].image_card_mask = image_card_mask;
+                                devocoes_imagem[devocao_index].image = devocao_holograma;
+                                devocoes_imagem[devocao_index].image_mask = devocao_holograma_mask;
+
+                                setupImage(cardFull.X, cardFull.Y, devocoes_imagem[devocao_index].image_card_full, devocoes_imagem[devocao_index].image_card_mask_full, devocoes[devocao_index].nick_card, "images/card_face_up_mask.bmp");
+                                setupImage(card.X, card.Y, devocoes_imagem[devocao_index].image_card, devocoes_imagem[devocao_index].image_card_mask, devocoes[devocao_index].nick_card, "images/card_face_up_mask.bmp");
+                                setupImage(card.X+image_god_size, card.X+image_god_size, devocoes_imagem[devocao_index].image, devocoes_imagem[devocao_index].image_mask, devocoes[devocao_index].nick, devocoes[devocao_index].nick_mask);
+
+                            }
+
+                        //============================================================================
+
+                            setupOneImage(xSize, ySize, battle_field, "images/tabuleiro.bmp");
+                            setupOneImage(xSize, ySize, tela_derrota, "images/tela_derrota.bmp");
+                            setupOneImage(xSize, ySize, tela_vitoria, "images/tela_vitoria.bmp");
 
                             setupImage(card.X, card.Y, cardfaceDown, cardfaceDownMask, "images/cards/card_face_down.bmp", "images/cards/card_face_down_mask.bmp");
                             setupImage(card.X, card.Y, cardfaceDownEnemy, cardfaceDownMaskEnemy, "images/cards/card_face_down_enemy.bmp", "images/cards/card_face_down_enemy_mask.bmp");
@@ -1074,18 +1429,23 @@ int main()  {
         int tempo = 0;
         int velocidade = 0;
         double aceleration = 0.03;
+
+        bool confirm_first_message = true;
     //============================================================================
 
     //Construindo a mão própria e do adversário
         SpaceField deckSize;
-        new_SpaceField(xSize*0.53, ySize/2, xSize*0.53+card.X, ySize/2 + card.Y, &deckSize);
+        new_SpaceField(xDeckPos, ySize/2, xSize*0.53+card.X, ySize/2 + card.Y, &deckSize);
         SpaceField deckEnemySize;
         new_SpaceField(deckSize.left, deckSize.top - card.Y - card.spaceY, deckSize.left + card.X, deckSize.top - card.spaceY, &deckEnemySize);
 
         Card deck[20];
-        buildDeck(deck, deuses);
+        buildDeck(deck, deuses, devocoes);
 
-        int amountHand = 3;
+        Card deck_enemy[10];
+        buildDeckEnemy(deck_enemy, deuses);
+
+        int amountHand = 4;
         int amountHandEnemy = 4;
         int amountDeck = 19 - amountHand;
 
@@ -1094,8 +1454,8 @@ int main()  {
         sizeHandFields[0].card = deck[19];
         sizeHandFields[1].card = deck[18];
         sizeHandFields[2].card = deck[17];
-        sizeHandFields[2].card.type = MAGIC_CARD;
         sizeHandFields[3].card = deck[16];
+
 
         SpaceField sizeHandFieldsEnemy[5];
         new_SpaceHandFields(xSize, card.spaceY, card, sizeHandFieldsEnemy);
@@ -1120,6 +1480,18 @@ int main()  {
     }
 
     int holograma_summon_color = cor_g_campo;
+
+    int passo_teste = 0;
+    int passo_teste1 = 0;
+    int passo_teste2 = 0;
+
+    int passo_creditos_1 = 0;
+    int passo_creditos_2 = 0;
+
+    int cont_frame = 0;
+    bool mana_insuficiente = false;
+
+    bool music_playing = true;
 
     while(tecla != 27) {
 
@@ -1149,11 +1521,12 @@ int main()  {
                     cor_g_holograma_aux = 0;
                 }
             }
+
         //=======================================
 
         //NUANCES DO CAMPO
             int campo_color = COLOR(50,cor_g_campo,50);
-            setbkcolor(campo_color);
+            //setbkcolor(campo_color);
 
             if(cor_g_campo_aux == 0){
                 if(cor_g_campo < 80){
@@ -1184,7 +1557,27 @@ int main()  {
             putimage(0, 0, menuImages[IMAGEM_MENU_SEM_SELECAO], 0);
             tela = verifyMenuClick(xSize, ySize, menuImages, tela);
             clearmouseclick(WM_LBUTTONDOWN);
-            putCardField(xSize/2, (ySize/2) - (yLogoSize/2), logo, logoMask);
+        }
+    //============================================================================
+
+    //TELA CREDITOS
+
+        if(tela == TELA_CREDITOS){
+            putimage(0, 0, menuImages[IMAGEM_TELA_CREDITOS], 0);
+
+            putCardField(xSize*0.21, ySize - passo_creditos_1, credits_mask_1, credits_1);
+            passo_creditos_1++;
+
+            if(passo_creditos_1 >= ySize*0.96){
+                putCardField(xSize*0.21, ySize - passo_creditos_2, credits_mask_2, credits_2);
+                passo_creditos_2++;
+            }
+
+            if(passo_creditos_2 >= ySize + (xSize*0.35)){
+                tela = TELA_MENU_PRINCIPAL;
+                passo_creditos_1 = 0;
+                passo_creditos_2 = 0;
+            }
 
         }
     //============================================================================
@@ -1192,198 +1585,387 @@ int main()  {
     //TELA DE DUELO
         if(tela == TELA_DUELO || tela == TELA_FADE_IN){
 
-            if(turn == true){
-
-                putCardField(xSize*0.635, (ySize/2) - (yLogoSize/2) , logo, logoMask);
-                if(withdraw == true && turn == true && amountHand < 4 && amountDeck >= 0){
-                    amountHand += 1;
-                    sizeHandFields[amountHand].card = deck[amountDeck];
-                    amountDeck -= 1;
-                    withdraw = false;
+                if(music_playing){
+                    PlaySound(NULL, 0, 0);
+                    PlaySound(TEXT("audio/SOUNDTRACK/in_game_music.wav"), 0, SND_LOOP | SND_ASYNC);
+                    music_playing = false;
                 }
 
-                //Deck
-                putCardField(deckSize.left, deckSize.top, cardfaceDown, cardfaceDownMask);
-                putCardField(deckEnemySize.left, deckEnemySize.top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
+            if(acumula_mana){
 
-                //Mão
-                for (size_t i = 0; i < 4; i++){
-                    if(sizeHandFields[i].active){
-                        putCardField(sizeHandFields[i].left, sizeHandFields[i].top, sizeHandFields[i].card.deus.image_card, sizeHandFields[i].card.deus.image_card_mask);
-                    }
-                    putCardField(sizeHandFieldsEnemy[i].left, sizeHandFieldsEnemy[i].top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
-                }
-
-                verifyAvailableButtons(cardOn, cardHand, sizeHandFields, botoes, turn);
-
-            //CONTROLE (MOUSE)
-                int posClickX = 0;
-                int posClickY = 0;
-                bool clickOn = ismouseclick(WM_LBUTTONDOWN);
-                if(clickOn){
-                    getmouseclick(WM_LBUTTONDOWN, posClickX, posClickY);
-
-                        buttonSelected = verifyButtonClick(posClickX, posClickY, xSize, ySize, botoes);
-
-                        if(cardField == BLANK_CLICK && buttonSelected == BLANK_CLICK){
-                            cardHand = verifyCardHandClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeHandFields, amountHand);
-                        }
-                        if(cardHand == BLANK_CLICK && buttonSelected == BLANK_CLICK){
-                            cardField = verifyCardFieldClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
-                        }
-
-                        passoDeck = verifyDeckClick(posClickX, posClickY, deckSize);
-
-                }
-            //======================    ======================================================
-
-            if(buttonSelected == BOTAO_INVOCAR){
-                int cont_spaces_summon = 0;
-                bool summon = false;
-
-                if(sizeHandFields[cardHand].card.type == GOD_CARD){
-                    while (cont_spaces_summon < 20 && summon == false){
-                        if(sizeFields[cont_spaces_summon].card.type == GOD_CARD && sizeFields[cont_spaces_summon].available == true){
-                            sizeFields[cont_spaces_summon].card = sizeHandFields[cardHand].card;
-                            sizeFields[cont_spaces_summon].active = true;
-                            sizeFields[cont_spaces_summon].available = false;
-                            sizeHandFields[cardHand].active = false;
-                            buttonSelected = BLANK_CLICK;
-                            cardHand = BLANK_CLICK;
-                            summon = true;
-                            amountHand--;
-                        }
-                        cont_spaces_summon++;
+                for (size_t i = 0; i < 20; i++)
+                {
+                    if(sizeFields[i].active && sizeFields[i].card.type == MAGIC_CARD){
+                        count_adoracoes[sizeFields[i].card.devocao.mithology] += sizeFields[i].card.devocao.manaValue;
                     }
                 }
+                acumula_mana = false;
             }
 
-            if(buttonSelected == BOTAO_FINALIZAR){
-                turn = false;
-            }
+            putimage(0, 0, battle_field, 0);
 
-            updateButtons(qtd_botoes, botoes, xSize, ySize);
+            putimage(xSize * 0.675, ySize*0.31, player_life_image, 0);
+            putimage(xSize * 0.675, ySize*0.58, player_life_image, 0);
+            putimage(xSize * 0.66, ySize*0.65, count_mana_image, 0);
 
-            selectCardField(xSize, cardOn, cardField, sizeFields, cardFull, &cardFull, backFullCard, &backFullCard);
-            selectCardHand(xSize, cardOn, cardHand, sizeHandFields, cardFull, &cardFull, backFullCard, &backFullCard);
-            selectAmountDeck(deckSize.left + (card.X/2), deckSize.top + (card.Y/2), passoDeck, &passoDeck, amountDeck);
+            print_score(xSize * 0.747, ySize*0.32, pontos_vida_enemy, 3);
+            print_score(xSize * 0.747, ySize*0.59, pontos_vida, 3);
 
-            putCardField(cardFull.spaceX, cardFull.spaceY, deuses[sizeHandFields[cardHand].card.deus.id].image_card_full, deuses[sizeHandFields[cardHand].card.deus.id].image_card_full_mask);
-            putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeHandFields[cardHand].card.deus.attackPoints].imageAttack, pontos[sizeHandFields[cardHand].card.deus.attackPoints].imageAttackMask);
-            putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeHandFields[cardHand].card.deus.lifePoints].imageLife, pontos[sizeHandFields[cardHand].card.deus.lifePoints].imageLifeMask);
+            print_score(xSize * 0.7, ySize*0.67, count_adoracoes[JAPONESE], 3);
+            print_score(xSize * 0.775, ySize*0.67, count_adoracoes[BRAZILIAN], 3);
+            print_score(xSize * 0.84, ySize*0.67, count_adoracoes[MAYA], 3);
 
-            //Verifica e coloca cards no campo
-            holograma.velocity_holograma = holograma.time_holograma * holograma.aceleration_holograma;
-            getVelocityHologram(holograma, &holograma, card.Y*0.12);
-            for (size_t i = 0; i < 20; i++){
-                if(sizeFields[i].available == false){
-
-                    //putCardField(sizeFields[i].left, sizeFields[i].top, card_face_up, card_face_up_mask);
-                    //bar(xRand, yRand, xRand+15, yRand+15);
-                    //putCardField(sizeFields[i].left-(image_god_size/2), sizeFields[i].top-holograma.velocity_holograma, deuses_holograma[sizeFields[i].card.deus.id].imagem_holograma, deuses_holograma[sizeFields[i].card.deus.id].imagem_holograma_mask);
-                    setcolor(holograma_summon_color);
-                    setfillstyle(INTERLEAVE_FILL, holograma_summon_color);
-                    fillellipse(sizeFields[i].left+(card.X/2), sizeFields[i].top+(3*(card.Y/4)), radiuses[i].xradius, radiuses[i].yradius);
-
-                    if(radiuses[i].xradius < card.X/2){
-                        radiuses[i].yradius += 1;
-                        radiuses[i].xradius += 2;
-                    } else {
-                        putCardField(sizeFields[i].left-(image_god_size/2), sizeFields[i].top-holograma.velocity_holograma, deuses_holograma[sizeFields[i].card.deus.id].imagem_holograma, deuses_holograma[sizeFields[i].card.deus.id].imagem_holograma_mask);
-
-                        /**
-                        for(int j = 0; j < 200;j++){
-                            int xRand = generateRandom(sizeFields[i].left, sizeFields[i].right);
-                            int yRand = generateRandom(sizeFields[i].top, sizeFields[i].bottom);
-                            setfillstyle(1, YELLOW);
-                            fillellipse(xRand, yRand, 3, 3);
-                            fillellipse(xRand-1, yRand+1, 3, 3);
-                            fillellipse(xRand+1, yRand-1, 3, 3);
-                            fillellipse(xRand+1, yRand+1, 3, 3);
-                            fillellipse(xRand-1, yRand-1, 3, 3);
-                            //bar(xRand, yRand, xRand+7, yRand+7);
-                        }**/
-
-                        //for(int j = 0; j < 500;j++){
-                        //    int xRand = generateRandom(sizeFields[i].left, sizeFields[i].right);
-                        //    int yRand = generateRandom(sizeFields[i].top, sizeFields[i].bottom);
-                        //    setfillstyle(1, campo_color);
-                        //    bar(xRand, yRand, xRand+15, yRand+15);
-                        //}
-                    }
-                }
-            }
-
-
-            if(cardField != BLANK_CLICK){
-                putCardField(cardFull.spaceX, cardFull.spaceY, deuses[sizeFields[cardField].card.deus.id].image_card_full, deuses[sizeFields[cardField].card.deus.id].image_card_full_mask);
-                putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeFields[cardField].card.deus.lifePoints].imageLife, pontos[sizeFields[cardField].card.deus.lifePoints].imageLifeMask);
-                putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeFields[cardField].card.deus.lifePoints].imageAttack, pontos[sizeFields[cardField].card.deus.lifePoints].imageAttackMask);
-            }
-
-                //HOLOGRAMA: SLOTS
-                    int left_holo[20];
-                    int right_holo[20];
-                    if(cardOn == CARD_OFF){
-                        for (size_t j = 0; j < 20; j++){
-                                left_holo[j] = sizeFields[j].left + (card.X/2);
-                                right_holo[j] = sizeFields[j].right - (card.X/2);
-                        }
-                    }
-
-                    if(cardOn == CARD_ON && cardHand != BLANK_CLICK){
-                        for (size_t j = 0; j < 20; j++){
-                            setfillstyle(WIDE_DOT_FILL, holograma_color);
-                            if(sizeHandFields[cardHand].card.type == MAGIC_CARD){
-                                if(sizeFields[j].card.type == MAGIC_CARD && sizeFields[j].available == true){
-
-                    setcolor(holograma_summon_color);
-                    setfillstyle(INTERLEAVE_FILL, holograma_summon_color);
-                    fillellipse(sizeFields[j].left+(card.X/2), sizeFields[j].top+(3*(card.Y/4)), radiuses[j].xradius, radiuses[j].yradius);
-
-                    if(radiuses[j].xradius < card.X/2){
-                        radiuses[j].yradius += 1;
-                        radiuses[j].xradius += 2;
-                    }
-
-                                    //bar(left_holo[j], sizeFields[j].top , right_holo[j], sizeFields[j].bottom);
-                                    //setcolor(WHITE);
-                                    //pieslice(left_holo[j], (sizeFields[j].top + card.Y/2), stangleSpaceSize, endangleSpaceSize, 5);
-                                    //pieslice(right_holo[j], (sizeFields[j].top + card.Y/2), endangleSpaceSize, stangleSpaceSize, 5);
-                                    //setfillstyle(SOLID_FILL, BLACK);
-
-                                }
+            //TURNO DO JOGADOR
+                if(turn == true){
+                    if(withdraw == true && turn == true && amountHand < 4 && amountDeck >= 0){
+                        int mao = 0;
+                        while(mao < 4){
+                            if(sizeHandFields[mao].active == false){
+                                sizeHandFields[mao].active = true;
+                                sizeHandFields[mao].card = deck[amountDeck];
+                                mao = 5;
                             }
+                            mao++;
+                        }
+                        amountDeck--;
+                        pontos_vida--;
+                        amountHand++;
+                        withdraw = false;
+                    }
+
+                    //Deck
+                    putCardField(deckSize.left, deckSize.top, cardfaceDown, cardfaceDownMask);
+                    putCardField(deckEnemySize.left, deckEnemySize.top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
+
+                    //Mão
+                    for (size_t i = 0; i < 4; i++){
+
+                        if(sizeHandFields[i].active && sizeHandFields[i].card.type == GOD_CARD){
+                            putCardField(sizeHandFields[i].left, sizeHandFields[i].top, sizeHandFields[i].card.deus.image_card, sizeHandFields[i].card.deus.image_card_mask);
+                        }
+                        if(sizeHandFields[i].active && sizeHandFields[i].card.type == MAGIC_CARD){
+                            putCardField(sizeHandFields[i].left, sizeHandFields[i].top, devocoes_imagem[sizeHandFields[i].card.devocao.id].image_card, devocoes_imagem[sizeHandFields[i].card.devocao.id].image_card_mask);
+                        }
+                        putCardField(sizeHandFieldsEnemy[i].left, sizeHandFieldsEnemy[i].top, cardfaceDownEnemy, cardfaceDownMaskEnemy);
+                    }
+
+                    verifyAvailableButtons(cardOn, cardField, sizeFields, cardHand, sizeHandFields, botoes, turn, count_adoracoes);
+
+                //CONTROLE (MOUSE)
+                    int posClickX = 0;
+                    int posClickY = 0;
+                    bool clickOn = ismouseclick(WM_LBUTTONDOWN);
+                    if(clickOn){
+                        getmouseclick(WM_LBUTTONDOWN, posClickX, posClickY);
+
+                            if(buttonSelected == BOTAO_ATACAR){
+                                if(attacking != true){
+                                    attackSelected = verifyAttack(attackSelected, posClickX, posClickY, sizeFields);
+                                }
+                            } else {
+                                buttonSelected = verifyButtonClick(posClickX, posClickY, xSize, ySize, botoes);
+                                if(cardField == BLANK_CLICK && buttonSelected == BLANK_CLICK){
+                                    cardHand = verifyCardHandClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeHandFields, amountHand);
+                                }
+
+                                if(cardHand == BLANK_CLICK && buttonSelected == BLANK_CLICK){
+                                    cardField = verifyCardFieldClick(&tela, posClickX, posClickY, cardOn, &cardOn, &backFullCard, sizeFields);
+                                }
+                                passoDeck = verifyDeckClick(posClickX, posClickY, deckSize);
+
+                            }
+
+                    }
+                //============================================================================
+
+                    if(buttonSelected == BOTAO_INVOCAR){
+                        int cont_spaces_summon = 0;
+                        bool summon = false;
+                        if(sizeHandFields[cardHand].card.deus.specialPower <= count_adoracoes[sizeHandFields[cardHand].card.deus.mithology]){
                             if(sizeHandFields[cardHand].card.type == GOD_CARD){
-                                if(sizeFields[j].card.type == GOD_CARD && sizeFields[j].available == true){
-
-                    setcolor(holograma_summon_color);
-                    setfillstyle(INTERLEAVE_FILL, holograma_summon_color);
-                    fillellipse(sizeFields[j].left+(card.X/2), sizeFields[j].top+(3*(card.Y/4)), radiuses[j].xradius, radiuses[j].yradius);
-
-                    if(radiuses[j].xradius < card.X/2){
-                        radiuses[j].yradius += 1;
-                        radiuses[j].xradius += 2;
-                    }
-
-
-                                    //bar(left_holo[j], sizeFields[j].top , right_holo[j], sizeFields[j].bottom);
-                                    //setcolor(WHITE);
-                                    //pieslice(left_holo[j], (sizeFields[j].top + card.Y/2), stangleSpaceSize, endangleSpaceSize, 5);
-                                    //pieslice(right_holo[j], (sizeFields[j].top + card.Y/2), endangleSpaceSize, stangleSpaceSize, 5);
-                                    //setfillstyle(SOLID_FILL, BLACK);
+                                while (cont_spaces_summon < 20 && summon == false){
+                                    if(sizeFields[cont_spaces_summon].card.type == GOD_CARD && sizeFields[cont_spaces_summon].available == true){
+                                        sizeFields[cont_spaces_summon].card = sizeHandFields[cardHand].card;
+                                        sizeFields[cont_spaces_summon].active = true;
+                                        sizeFields[cont_spaces_summon].available = false;
+                                        sizeHandFields[cardHand].active = false;
+                                        buttonSelected = BLANK_CLICK;
+                                        count_adoracoes[sizeHandFields[cardHand].card.deus.mithology] -= 1;
+                                        summon = true;
+                                        amountHand--;
+                                    }
+                                    cont_spaces_summon++;
                                 }
                             }
-                            if(left_holo[j] > sizeFields[j].left){
-                                left_holo[j] -= 2;
-                                right_holo[j] += 2;
+                                cardHand = BLANK_CLICK;
+                            } else {
+                                mana_insuficiente = true;
+                            }
+                    }
+
+                    if(buttonSelected == BOTAO_ATIVAR_EFEITO){
+                        int cont_spaces_summon = 0;
+                        bool summon = false;
+                        if(sizeHandFields[cardHand].card.type == MAGIC_CARD){
+                            while (cont_spaces_summon < 20 && summon == false){
+                                if(sizeFields[cont_spaces_summon].card.type == MAGIC_CARD && sizeFields[cont_spaces_summon].available == true){
+                                    sizeFields[cont_spaces_summon].card = sizeHandFields[cardHand].card;
+                                    sizeFields[cont_spaces_summon].active = true;
+                                    sizeFields[cont_spaces_summon].available = false;
+                                    sizeHandFields[cardHand].active = false;
+                                    buttonSelected = BLANK_CLICK;
+                                    summon = true;
+                                    amountHand--;
+                                }
+                                cont_spaces_summon++;
                             }
                         }
-                        setfillstyle(SOLID_FILL, BLACK);
+                        cardHand = BLANK_CLICK;
                     }
-                //==========================================
+
+                    if(buttonSelected == BOTAO_FINALIZAR){
+                        int cont_spaces_enemy = 0;
+                        bool summon = false;
+
+                        while (cont_spaces_enemy < 20 && summon == false){
+                            if(sizeFields[cont_spaces_enemy].card.type == GOD_CARD_ENEMY && sizeFields[cont_spaces_enemy].available == true){
+                                        sizeFields[cont_spaces_enemy].card = deck_enemy[amountHandEnemy];
+                                        sizeFields[cont_spaces_enemy].active = true;
+                                        sizeFields[cont_spaces_enemy].available = false;
+                                        summon = true;
+                                        amountHandEnemy--;
+                                        pontos_vida_enemy--;
+                            }
+                            cont_spaces_enemy++;
+                        }
+
+                        cardHand = BLANK_CLICK;
+                        acumula_mana = true;
+                        buttonSelected = BLANK_CLICK;
+                        withdraw = true;
+
+                        if(pontos_vida_enemy == 0){
+                            int derrota = 0;
+                            for (int i = 10; i < 15; i++){
+                                if(sizeFields[i].active == false){
+                                    derrota++;
+                                }
+                            }
+                            if(derrota == 5){
+                                tela = TELA_VITORIA;
+                            }
+                        }
+
+                        if(pontos_vida == 0){
+                          int derrota = 0;
+                            for (int i = 5; i < 10; i++){
+                                if(sizeFields[i].active == false){
+                                    derrota++;
+                                }
+                            }
+                            if(derrota == 5){
+                                tela = TELA_DERROTA;
+                            }
+                        }
+
+                        for (size_t i = 0; i < 20; i++)
+                        {
+                            sizeFields[i].card.deus.enableAttack = true;
+                        }
+                    }
+
+                    if(buttonSelected == BOTAO_DESISTIR){
+                        tela = TELA_DERROTA;
+                    }
+
+                updateButtons(qtd_botoes, botoes, xSize, ySize);
+
+                selectCardField(xSize, cardOn, cardField, sizeFields, cardFull, &cardFull, backFullCard, &backFullCard);
+                selectCardHand(xSize, cardOn, cardHand, sizeHandFields, cardFull, &cardFull, backFullCard, &backFullCard);
+                selectAmountDeck(deckSize.left + (card.X/2), deckSize.top + (card.Y/2), passoDeck, &passoDeck, amountDeck);
+
+                if(cardHand != BLANK_CLICK){
+
+                    if(sizeHandFields[cardHand].active && sizeHandFields[cardHand].card.type == GOD_CARD){
+                        putCardField(cardFull.spaceX, cardFull.spaceY, deuses[sizeHandFields[cardHand].card.deus.id].image_card_full, deuses[sizeHandFields[cardHand].card.deus.id].image_card_full_mask);
+                        putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeHandFields[cardHand].card.deus.attackPoints].imageAttack, pontos[sizeHandFields[cardHand].card.deus.attackPoints].imageAttackMask);
+                        putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeHandFields[cardHand].card.deus.lifePoints].imageLife, pontos[sizeHandFields[cardHand].card.deus.lifePoints].imageLifeMask);
+                    }
+
+                    if(sizeHandFields[cardHand].active && sizeHandFields[cardHand].card.type == MAGIC_CARD){
+                        putCardField(cardFull.spaceX, cardFull.spaceY, devocoes_imagem[sizeHandFields[cardHand].card.devocao.id].image_card_full, devocoes_imagem[sizeHandFields[cardHand].card.devocao.id].image_card_mask_full);
+                    }
+
+                    if(mana_insuficiente){
+                        setcolor(holograma_color);
+                        setlinestyle(SOLID_LINE, 4, 4);
+                        rectangle(cardFull.spaceX + (cardFull.X*0.08), cardFull.spaceY + (cardFull.Y*0.15), cardFull.spaceX + (cardFull.X*0.235), cardFull.spaceY + (cardFull.Y*0.265));
+                    }
+
+                } else {
+                    mana_insuficiente = false;
+                }
+
+                //Verifica e coloca cards no campo
+                holograma.velocity_holograma = holograma.time_holograma * holograma.aceleration_holograma;
+                getVelocityHologram(holograma, &holograma, card.Y*0.1);
+                for (size_t i = 0; i < 20; i++){
+                    if(sizeFields[i].available == false){
+
+                            if(sizeFields[i].card.type == MAGIC_CARD || sizeFields[i].card.type == GOD_CARD){
+                                setcolor(holograma_summon_color);
+                                setfillstyle(INTERLEAVE_FILL, holograma_summon_color);
+                                fillellipse(sizeFields[i].left+(card.X/2), sizeFields[i].top+(5*(card.Y/6)), radiuses[i].xradius, radiuses[i].yradius);
+
+                            }
+
+                            if(radiuses[i].xradius < card.X/2){
+                                radiuses[i].yradius += 1;
+                                radiuses[i].xradius += 2;
+                            } else {
+
+                            if(sizeFields[i].card.type == MAGIC_CARD){
+                                putCardField(sizeFields[i].left-(image_god_size/2), sizeFields[i].top*1.05 - holograma.velocity_holograma, devocoes_imagem[sizeFields[i].card.devocao.id].image, devocoes_imagem[sizeFields[i].card.devocao.id].image_mask);
+                            }
+
+                            if(sizeFields[i].card.type == GOD_CARD){
+                                if(attacking == false){
+                                    putCardField(sizeFields[i].left-(image_god_size/2), sizeFields[i].top*1.05 - holograma.velocity_holograma, deuses_holograma[sizeFields[i].card.deus.id].imagem_holograma, deuses_holograma[sizeFields[i].card.deus.id].imagem_holograma_mask);
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+                if(buttonSelected == BOTAO_ATACAR){
+                        if(attackSelected == BLANK_CLICK){
+                            for (int i = 10; i < 15; i++)
+                            {
+                                if(sizeFields[i].active){
+                                    putCardField(sizeFields[i].left + (card.X/4), sizeFields[i].bottom, espada, espada_mask);
+                                }
+                            }
+                        } else {
+                            if(passo_teste < 20){
+                                putCardField(sizeFields[attackSelected].left + (card.X/4), sizeFields[attackSelected].top + (card.X/2), espada_full, espada_mask_full);
+                                passo_teste++;
+                            } else {
+                                    passo_teste = 0;
+                                    sizeFields[cardField].card.deus.enableAttack = false;
+                                    ataque_value = sizeFields[attackSelected].card.deus.lifePoints - sizeFields[cardField].card.deus.attackPoints;
+                                    sizeFields[attackSelected].card.deus.lifePoints = sizeFields[attackSelected].card.deus.lifePoints - sizeFields[cardField].card.deus.attackPoints;
+
+                                    card_atacante = cardField;
+                                    card_atacado = attackSelected;
+                                    passo_ataque = 0;
+                                if(sizeFields[attackSelected].card.deus.lifePoints <= 0){
+                                    sizeFields[attackSelected].card = card;
+                                    sizeFields[attackSelected].card.type = GOD_CARD_ENEMY;
+                                    sizeFields[attackSelected].active = false;
+                                    sizeFields[attackSelected].available = true;
+                                } else {
+                                    contra_ataque_value = sizeFields[cardField].card.deus.lifePoints - sizeFields[attackSelected].card.deus.attackPoints;
+                                    sizeFields[cardField].card.deus.lifePoints = sizeFields[cardField].card.deus.lifePoints - sizeFields[attackSelected].card.deus.attackPoints;
+
+                                }
+                                if(sizeFields[cardField].card.deus.lifePoints <= 0){
+                                    sizeFields[cardField].card = card;
+                                    sizeFields[cardField].active = false;
+                                    sizeFields[cardField].available = true;
+                                }
+                                buttonSelected = BLANK_CLICK;
+                                attackSelected = BLANK_CLICK;
+                                cardField = BLANK_CLICK;
+                            }
+                        }
+                }
+
+                if(passo_ataque < 50){
+
+                    print_score(sizeFields[card_atacante].left + (sizeFields[card_atacante].right - sizeFields[card_atacante].left)/2, sizeFields[card_atacante].top + (sizeFields[card_atacante].bottom - sizeFields[card_atacante].top)/2,
+                    contra_ataque_value*(-1), 4);
+
+                    print_score(sizeFields[card_atacado].left + (sizeFields[card_atacado].right - sizeFields[card_atacado].left)/2, sizeFields[card_atacado].top + (sizeFields[card_atacado].bottom - sizeFields[card_atacado].top)/2,
+                    ataque_value*(-1), 4);
+
+                    passo_ataque++;
+
+                }
+
+                if(cardField != BLANK_CLICK){
+
+                    if(sizeFields[cardField].card.type == GOD_CARD || sizeFields[cardField].card.type == GOD_CARD_ENEMY){
+                        putCardField(cardFull.spaceX, cardFull.spaceY, deuses[sizeFields[cardField].card.deus.id].image_card_full, deuses[sizeFields[cardField].card.deus.id].image_card_full_mask);
+                        putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeFields[cardField].card.deus.attackPoints].imageAttack, pontos[sizeFields[cardField].card.deus.attackPoints].imageAttackMask);
+                        putCardField(cardFull.spaceX, cardFull.spaceY, pontos[sizeFields[cardField].card.deus.lifePoints].imageLife, pontos[sizeFields[cardField].card.deus.lifePoints].imageLifeMask);
+                    }
+
+                    if(sizeFields[cardField].card.type == MAGIC_CARD || sizeFields[cardField].card.type == MAGIC_CARD_ENEMY){
+                        putCardField(cardFull.spaceX, cardFull.spaceY, devocoes_imagem[sizeFields[cardField].card.devocao.id].image_card_full, devocoes_imagem[sizeFields[cardField].card.devocao.id].image_card_mask_full);
+                    }
+
+                }
+
+                    //HOLOGRAMA: SLOTS
+                        int left_holo[20];
+                        int right_holo[20];
+                        if(cardOn == CARD_OFF){
+                            for (size_t j = 0; j < 20; j++){
+                                if(sizeFields[j].active == false){
+                                        radiuses[j].yradius = 0;
+                                        radiuses[j].xradius = 0;
+                                }
+
+                            }
+                        }
+
+                        if(cardOn == CARD_ON && cardHand != BLANK_CLICK){
+                            for (size_t j = 0; j < 20; j++){
+                                setfillstyle(WIDE_DOT_FILL, holograma_color);
+                                if(sizeHandFields[cardHand].card.type == MAGIC_CARD){
+                                    if(sizeFields[j].card.type == MAGIC_CARD && sizeFields[j].available == true){
+                                        setcolor(holograma_summon_color);
+                                        setfillstyle(INTERLEAVE_FILL, holograma_summon_color);
+                                        fillellipse(sizeFields[j].left+(card.X/2), sizeFields[j].top+(5*(card.Y/6)), radiuses[j].xradius, radiuses[j].yradius);
+
+                                        if(radiuses[j].xradius < card.X/2){
+                                            radiuses[j].yradius += 1;
+                                            radiuses[j].xradius += 2;
+                                        }
+                                      }
+                                }
+
+                                if(sizeHandFields[cardHand].card.type == GOD_CARD){
+                                    if(sizeFields[j].card.type == GOD_CARD && sizeFields[j].available == true){
+
+                                    setcolor(holograma_summon_color);
+                                    setfillstyle(INTERLEAVE_FILL, holograma_summon_color);
+                                    fillellipse(sizeFields[j].left+(card.X/2), sizeFields[j].top+(5*(card.Y/6)), radiuses[j].xradius, radiuses[j].yradius);
+
+                                    if(radiuses[j].xradius < card.X/2){
+                                        radiuses[j].yradius += 1;
+                                        radiuses[j].xradius += 2;
+                                    }
+                                        //bar(left_holo[j], sizeFields[j].top , right_holo[j], sizeFields[j].bottom);
+                                        //setcolor(WHITE);
+                                        //pieslice(left_holo[j], (sizeFields[j].top + card.Y/2), stangleSpaceSize, endangleSpaceSize, 5);
+                                        //pieslice(right_holo[j], (sizeFields[j].top + card.Y/2), endangleSpaceSize, stangleSpaceSize, 5);
+                                        //setfillstyle(SOLID_FILL, BLACK);
+                                    }
+                                }
+                                //if(left_holo[j] > sizeFields[j].left){
+                                //    left_holo[j] -= 2;
+                                //    right_holo[j] += 2;
+                                //}
+                            }
+                            setfillstyle(SOLID_FILL, BLACK);
+                        }
+                    //==========================================
+                }
+
         }
-    }
 
     //============================================================================
 
@@ -1415,6 +1997,11 @@ int main()  {
                 bar(0, 0, x1FadeSize, ySize);
                 bar(x2FadeSize, 0, xSize, ySize);
 
+
+                int xText = textwidth("AGUARDANDO UM MORTAL ENTRAR NA TAVERNA...");
+                int yText = textheight("C");
+                outtextxy(xSize/2 - (xText/2), (ySize/4), "AGUARDANDO UM MORTAL ENTRAR NA TAVERNA...");
+
                     setfillstyle(SOLID_FILL, COLOR(85,107,47));
                     setcolor(COLOR(60,179,113));
                     setlinestyle(SOLID_LINE, USERBIT_LINE, THICK_WIDTH);
@@ -1427,13 +2014,21 @@ int main()  {
                     }
 
                 } else {
+
                     y1FadeSize -= 10;
                     y2FadeSize += 10;
-                    if(x1FadeSize == 0){
-                        x1FadeSize = 0;
-                        x2FadeSize = xSize;
+
+                    if(y2FadeSize < 5*(ySize/7)){
+                        int xText = textwidth("UM MORTAL ENTROU NA TAVERNA! QUE OS DEUSES ESTEJAM COM VOCE!");
+                        int yText = textheight("C");
+                        outtextxy(xSize/2 - (xText/2), 3*(ySize/4), "UM MORTAL ENTROU NA TAVERNA! QUE OS DEUSES ESTEJAM COM VOCE!");
+                    }
+
+                    if(y2FadeSize >= ySize){
                         tela = TELA_DUELO;
                     }
+
+                setfillstyle(SOLID_FILL, BLACK);
                 bar(0, 0, xSize, y1FadeSize);
                 bar(0, y2FadeSize, xSize, ySize);
 
@@ -1444,9 +2039,27 @@ int main()  {
                 pieslice(xSize/2, y2FadeSize, endangle, stangle, 100);
                 setfillstyle(SOLID_FILL, BLACK);
             }
-
         }
     //============================================================================
+
+
+    if(tela == TELA_DERROTA){
+
+        putimage(0, 0, tela_derrota, 0);
+        int xText = textwidth("APERTE ESC PARA SAIR...");
+        int yText = textheight("C");
+        outtextxy(xSize/2 - (xText/2), ySize - (2*yText), "APERTE ESC PARA SAIR...");
+
+    }
+
+    if(tela == TELA_VITORIA){
+
+        putimage(0, 0, tela_vitoria, 0);
+        int xText = textwidth("APERTE ESC PARA SAIR...");
+        int yText = textheight("C");
+        outtextxy(xSize/2 - (xText/2), ySize - (2*yText), "APERTE ESC PARA SAIR...");
+
+    }
 
     //CONFIGURACOES / PAGINACAO
         setvisualpage(pg);
@@ -1454,70 +2067,9 @@ int main()  {
         tecla = getch();
         delay(15);
     //============================================================================
-
-    }
+}
 
     closegraph();
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // posXDark = xSize*0.025;
-    // posYDark = ySize/2;
-
-    // for (size_t j = 0; j < 5; j++){
-    //     putCardField(posXDark, posYDark, cardFaceUp, cardFaceUpMask);
-
-
-    //     putCardField(posXDark + (card.X*0.1), posYDark + (card.Y*0.2) - velocidade, deusImagem, deusImagemMask);
-    //     posXDark = posXDark + card.X*1.2;
-    // }
-
-    // putCardField(posXDark, posYDark, cardfaceDown, cardfaceDownMask);
-
-
+//2073
